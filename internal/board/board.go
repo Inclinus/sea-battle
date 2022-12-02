@@ -2,6 +2,8 @@ package board
 
 import (
 	"fmt"
+	"sea-battle/internal/boats"
+	"sea-battle/internal/shots"
 )
 
 /*
@@ -32,10 +34,10 @@ import (
 */
 
 /*
- * Prints an empty board for demonstration purposes (eg: tutorial)
- *
- * IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
- * be printed correctly
+	Prints an empty board for demonstration purposes (eg: tutorial)
+
+ 	IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
+	be printed correctly
  */
 func PrintEmptyBoard() {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
@@ -45,5 +47,5 @@ func PrintEmptyBoard() {
 		fmt.Printf("%02d |   |   |   |   |   |   |   |   |   |   |\n", i)
 	}
 
-	fmt.Println("   -----------------------------------------\n")
+	fmt.Printf("   -----------------------------------------\n\n")
 }

@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"internal/board"
-	"internal/ip"
+	"sea-battle/internal/board"
+	"sea-battle/internal/boats"
+	"sea-battle/internal/ip"
 )
 
 func main() {
@@ -11,4 +12,6 @@ func main() {
 	fmt.Printf("IP: %s\nPort: %d\n", ip, port)
 
 	board.PrintEmptyBoard()
+
+	fmt.Println(boats.GenerateRandomBoats())
 }

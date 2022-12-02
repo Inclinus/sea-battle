@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"internal/board"
 	"internal/ip"
 )
 

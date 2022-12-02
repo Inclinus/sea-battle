@@ -1,4 +1,4 @@
-package main
+package ip
 
 import (
 	"strconv"
@@ -17,8 +17,4 @@ func SplitIpAndPort(str string) (string, uint16) {
 	}
 
 	return ip, ui
-
-}
-func main() {
-
 }

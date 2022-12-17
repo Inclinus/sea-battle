@@ -9,16 +9,16 @@ func DisplayMenu() {
 	var choice int
 
 	for true {
-		fmt.Println("Menu :\n")
-		fmt.Println("1-  Voir l'état du board \n")
-		fmt.Println("2-  Attaquer \n")
-		fmt.Println("3- Visualiser les alias \n")
-		fmt.Println("4-  Règles du jeu \n")
-		fmt.Println("5-  Statistiques \n")
-		fmt.Println("6-  Crédits \n")
-		fmt.Println("7-  Quitter la session \n")
+		fmt.Println("Menu :\n" +
+			"1 -  Voir l'état du board \n" +
+			"2 -  Attaquer \n" +
+			"3 -  Visualiser les alias \n" +
+			"4 -  Règles du jeu \n" +
+			"5 -  Statistiques \n" +
+			"6 -  Crédits \n" +
+			"7 -  Quitter la session \n\n" +
+			"Quel est votre choix ? \n")
 
-		fmt.Println("Quel est votre choix ? \n")
 		fmt.Scanf("%d\n", &choice)
 
 		switch choice {
@@ -30,6 +30,7 @@ func DisplayMenu() {
 		case 3:
 			//Visualization of the alias
 		case 4:
+			fmt.Println("")
 			fmt.Println("La bataille navale est un des jeux de société qui fait amuser petits et grands. La bataille navale est idéale pour passer un moment en famille. " +
 				"\nVoici les règles du jeu : \n")
 			fmt.Println("Pour jouer à la bataille navale, il vous faut un plateau de jeu où chacun dispose d’une grille numérotée de 1 à 10 horizontalement et annotée de A à J verticalement," +
@@ -59,5 +60,5 @@ func DisplayMenu() {
 	}
 }
 func main() {
-
+	DisplayMenu()
 }

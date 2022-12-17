@@ -5,11 +5,14 @@ import (
 	"strconv"
 )
 
+// TODO : Move this code in util's package
+
 type Position struct {
 	X byte
 	Y uint8
 }
 
+// This function get a string in parameter (ex: "J6") and return a Position struct
 func getPositionFromString(inputPos string) Position {
 	var pos Position
 	YtoInt, _ := strconv.Atoi(inputPos[1:2])
@@ -22,6 +25,9 @@ func getPositionFromString(inputPos string) Position {
 }
 
 func main() {
+
+	// Test of the function getPositionFromString
 	result := getPositionFromString("J6")
 	fmt.Println(result)
+
 }

@@ -11,7 +11,7 @@ type IP struct {
 	port uint16
 }
 
-// This function split an ip "192.168.0.1:8080" to a string "192.168.0.1" and a port 8080 as uint16.
+// SplitIpAndPort This function split an ip "192.168.0.1:8080" to a string "192.168.0.1" and a port 8080 as uint16.
 func SplitIpAndPort(str string) (string, uint16) {
 	split := strings.Split(str, ":")
 	ip, port := split[0], split[1]

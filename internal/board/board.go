@@ -10,7 +10,7 @@ import (
 /*
 	Overview of an empty sea battle board:
 
-		A   B   C   D   E   F   G   H   I   J
+		A   B   C   D   E   F   G   H   I    J
 	   -----------------------------------------
 	01 |   |   |   |   |   |   |   |   |   |   |
 	   -----------------------------------------

@@ -64,7 +64,7 @@ func removeAlias(aliases *map[string]IP, username string) {
 }
 
 // This function returns the IP of a provided username, returning IP and PORT.
-func getIpOff(username string, aliases *map[string]IP) (string, uint16) {
+func getIpOf(username string, aliases *map[string]IP) (string, uint16) {
 	for key, value := range *aliases {
 		if key == username {
 			return value.ip, value.port

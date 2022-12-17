@@ -11,6 +11,7 @@ type IP struct {
 	port uint16
 }
 
+// This function split an ip "192.168.0.1:8080" to a string "192.168.0.1" and a port 8080 as uint16.
 func SplitIpAndPort(str string) (string, uint16) {
 	split := strings.Split(str, ":")
 	ip, port := split[0], split[1]
@@ -26,6 +27,7 @@ func SplitIpAndPort(str string) (string, uint16) {
 
 }
 
+// This function add an association between a provided IP and a provided username.
 func addAlias(aliases *map[string]IP, ip string, username string) {
 	realIp, port := SplitIpAndPort(ip)
 	ipStruct := IP{
@@ -35,12 +37,14 @@ func addAlias(aliases *map[string]IP, ip string, username string) {
 	(*aliases)[username] = ipStruct
 }
 
+// This function displays all the associations betweens IP and usernames.
 func displayAliases(aliases *map[string]IP) {
 	for key, value := range *aliases {
 		fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
 	}
 }
 
+// This function displays the associated IP of the username provided.
 func displayAlias(aliases *map[string]IP, username string) {
 	for key, value := range *aliases {
 		if key == username {
@@ -49,6 +53,7 @@ func displayAlias(aliases *map[string]IP, username string) {
 	}
 }
 
+// This function remove the associated IP of the username provided.
 func removeAlias(aliases *map[string]IP, username string) {
 	for key, _ := range *aliases {
 		if key == username {
@@ -58,6 +63,7 @@ func removeAlias(aliases *map[string]IP, username string) {
 	}
 }
 
+// This function returns the IP of a provided username, returning IP and PORT.
 func getIpOff(username string, aliases *map[string]IP) (string, uint16) {
 	for key, value := range *aliases {
 		if key == username {

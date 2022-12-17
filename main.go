@@ -13,7 +13,7 @@ type Position struct {
 }
 
 // This function get a string in parameter (ex: "J6") and return a Position struct
-func getPositionFromString(inputPos string) Position {
+func GetPositionFromString(inputPos string) Position {
 	var pos Position
 	YtoInt, _ := strconv.Atoi(inputPos[1:2])
 	pos.Y = uint8(YtoInt)
@@ -27,7 +27,7 @@ func getPositionFromString(inputPos string) Position {
 func main() {
 
 	// Test of the function getPositionFromString
-	result := getPositionFromString("J6")
+	result := GetPositionFromString("J6")
 	fmt.Println(result)
 
 }

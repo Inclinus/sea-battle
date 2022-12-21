@@ -5,6 +5,7 @@ import (
 
 	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
+	"sea-battle/internal/utils"
 )
 
 /*
@@ -61,6 +62,12 @@ func PrintEmptyBoard() {
 func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
 
+	// Concatenate all boats' positions
+	var allBoatsPositions []utils.Position
+	for _, boat := range boats {
+		allBoatsPositions = append(allBoatsPositions, boat.Position...)
+	}
+
 	for i := 1; i <= 10; i++ {
 		fmt.Println("   -----------------------------------------")
 		for j := 0; j <= 10; j++ {
@@ -70,15 +77,15 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 				symbol := " "
 
 				// Check if there is a boat at this position
-				for _, boat := range boats {
-					if boat.Position.X == byte(j) && boat.Position.Y == uint8(i) {
+				for _, boatPosition := range allBoatsPositions {
+					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
 						symbol = "O"
 					}
 				}
 
 				// Check if there is a shot at this position
 				for _, shot := range shots {
-					if shot.Position.X == byte(j) && shot.Position.Y == uint8(i) {
+					if shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
 						symbol = "X"
 					}
 				}

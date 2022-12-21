@@ -20,7 +20,7 @@ import (
 	simply one of the extremity of the boat.
 */
 type Boat struct {
-	Position utils.Position
+	Position []utils.Position
 	Direction string
 	Size uint8
 }
@@ -54,26 +54,6 @@ func GenerateRandomBoats() (boats [5]Boat) {
 
 	// Generate data for each boat
 	for i := 0; i < 5; i++ {
-		// Generate position by checking if it's not overlapping another boat
-		var position utils.Position
-		var direction string
-		for {
-			position = utils.Position{
-				X: byte(rand.Intn(10)),
-				Y: uint8(rand.Intn(10)),
-			}
-			direction = directions[rand.Intn(4)]
-
-			if true { // TODO: boat overlapping verification
-				break
-			}
-		}
-
-		/*
-		positions := utils.Position{X: byte(rand.Intn(10)), Y: uint8(rand.Intn(10))}
-		direction := directions[rand.Intn(4)]
-		*/
-
 		// Generate boat size by checking if it doesn't exceed the limit
 		var size uint8
 		for {
@@ -83,6 +63,51 @@ func GenerateRandomBoats() (boats [5]Boat) {
 			if boatsCounters[size] < boatsAmountLimits[size] {
 				boatsCounters[size]++
 				break
+			}
+		}
+
+		// Generate direction
+		direction := directions[rand.Intn(4)]
+
+		// Generate position by checking if it's not overlapping another boat
+		var position []utils.Position
+		for i := uint8(0); i < size; i++{
+			if (i == 0) {
+				// Push the first position
+				position = append(position, utils.Position{
+					X: byte(rand.Intn(10)),
+					Y: uint8(rand.Intn(10)),
+				})
+			} else {
+				// Push next positions depending on the direction & the size
+				switch direction {
+				case "T":
+					position = append(position, utils.Position{
+						X: position[i-1].X,
+						Y: position[i-1].Y + 1,
+					})
+
+				case "R":
+					position = append(position, utils.Position{
+						X: position[i-1].X + 1,
+						Y: position[i-1].Y,
+					})
+
+				case "B":
+					position = append(position, utils.Position{
+						X: position[i-1].X,
+						Y: position[i-1].Y - 1,
+					})
+
+				case "L":
+					position = append(position, utils.Position{
+						X: position[i-1].X - 1,
+						Y: position[i-1].Y,
+					})
+
+				default:
+					panic("Invalid direction")
+				}
 			}
 		}
 

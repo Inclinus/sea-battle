@@ -9,8 +9,8 @@ import (
 
 /*
 	Overview of a 4-size boat:
-		Clean     : O O O O
-		Hit       : O # O O
+		Clean     : ■ ■ ■ ■
+		Hit       : ■ X ■ ■
 		Destroyed : # # # #
 */
 

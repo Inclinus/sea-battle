@@ -25,6 +25,20 @@ type Boat struct {
 	Size uint8
 }
 
+func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
+	for _, b := range boats {
+		for _, p := range b.Position {
+			for _, bp := range boat.Position {
+				if (p.X == bp.X && p.Y == bp.Y) {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
+}
+
 /*
 	Returns an array of 5 boats with random positions & direction
 
@@ -69,53 +83,62 @@ func GenerateRandomBoats() (boats [5]Boat) {
 		// Generate direction
 		direction := directions[rand.Intn(4)]
 
-		// Generate position by checking if it's not overlapping another boat
+		// Generate position
 		var position []utils.Position
-		for i := uint8(0); i < size; i++{
-			if (i == 0) {
-				// Push the first position
-				position = append(position, utils.Position{
-					X: byte(rand.Intn(10)),
-					Y: uint8(rand.Intn(10)),
-				})
-			} else {
-				// Push next positions depending on the direction & the size
-				switch direction {
-				case "T":
+		// While loop for checking if boat isn't overlapping another one
+		for {
+			for i := uint8(0); i < size; i++{
+				if (i == 0) {
+					// Push the first position
 					position = append(position, utils.Position{
-						X: position[i-1].X,
-						Y: position[i-1].Y + 1,
+						X: byte(rand.Intn(10)),
+						Y: uint8(rand.Intn(10)),
 					})
+				} else {
+					// Push next positions depending on the direction & the size
+					switch direction {
+					case "T":
+						position = append(position, utils.Position{
+							X: position[i-1].X,
+							Y: position[i-1].Y + 1,
+						})
 
-				case "R":
-					position = append(position, utils.Position{
-						X: position[i-1].X + 1,
-						Y: position[i-1].Y,
-					})
+					case "R":
+						position = append(position, utils.Position{
+							X: position[i-1].X + 1,
+							Y: position[i-1].Y,
+						})
 
-				case "B":
-					position = append(position, utils.Position{
-						X: position[i-1].X,
-						Y: position[i-1].Y - 1,
-					})
+					case "B":
+						position = append(position, utils.Position{
+							X: position[i-1].X,
+							Y: position[i-1].Y - 1,
+						})
 
-				case "L":
-					position = append(position, utils.Position{
-						X: position[i-1].X - 1,
-						Y: position[i-1].Y,
-					})
+					case "L":
+						position = append(position, utils.Position{
+							X: position[i-1].X - 1,
+							Y: position[i-1].Y,
+						})
 
-				default:
-					panic("Invalid direction")
+					default:
+						panic("Invalid direction")
+					}
 				}
+			}
+
+			// Create boat
+			boat := Boat{position, direction, size}
+
+			// Append boat to the list if it doesn't overlap another one
+			// If not, it will regenerate the boat
+			// by going back to the beginning of the loop
+			if (!isBoatOverlapping(boat, boats)) {
+				boats[i] = boat
+				break
 			}
 		}
 
-		// Create boat
-		boat := Boat{position, direction, size}
-
-		// Append boat to the list
-		boats[i] = boat
 	}
 
 	return boats

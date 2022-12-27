@@ -47,7 +47,7 @@ func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
  */
 func isBoatOutOfBoard(boat Boat) bool {
 	for _, p := range boat.Position {
-		if (p.X < 0 || p.X > 9 || p.Y < 0 || p.Y > 9) {
+		if (p.X < 1 || p.X > 10 || p.Y < 1 || p.Y > 10) {
 			return true
 		}
 	}
@@ -99,16 +99,16 @@ func GenerateRandomBoats() (boats [5]Boat) {
 		// Generate direction
 		direction := directions[rand.Intn(4)]
 
-		// Generate position
-		var position []utils.Position
 		// While loop for checking if boat isn't overlapping another one
 		for {
+			var position []utils.Position
+
 			for i := uint8(0); i < size; i++{
 				if (i == 0) {
 					// Push the first position
 					position = append(position, utils.Position{
-						X: byte(rand.Intn(10)),
-						Y: uint8(rand.Intn(10)),
+						X: byte(rand.Intn(11)),
+						Y: uint8(rand.Intn(11)),
 					})
 				} else {
 					// Push next positions depending on the direction & the size
@@ -153,7 +153,6 @@ func GenerateRandomBoats() (boats [5]Boat) {
 				break
 			}
 		}
-
 	}
 
 	return boats

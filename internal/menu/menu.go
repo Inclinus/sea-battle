@@ -6,7 +6,6 @@ import (
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
-	"sea-battle/internal/utils"
 )
 
 func DisplayChoices() {
@@ -96,11 +95,6 @@ func DisplayMenu() {
 
 			// Create an array of allShots
 			var allShots []shots.Shot
-			allShots = append(allShots, shots.Shot{Position: utils.Position{X: 3, Y: 1}, Hit: true})
-			allShots = append(allShots, shots.Shot{Position: utils.Position{X: 9, Y: 2}, Hit: false})
-			allShots = append(allShots, shots.Shot{Position: utils.Position{X: 2, Y: 3}, Hit: true})
-			allShots = append(allShots, shots.Shot{Position: utils.Position{X: 5, Y: 4}, Hit: false})
-			allShots = append(allShots, shots.Shot{Position: utils.Position{X: 10, Y: 10}, Hit: true})
 
 			// Print board
 			board.PrintBoard(boats, allShots)

@@ -74,12 +74,22 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 			if j == 0 {
 				fmt.Printf("%02d |", i)
 			} else {
+				/*
+					Symbols:
+					■ -> boat
+					0 -> missed shot
+					X -> hit shot
+					# -> destroyed boat
+				*/
+
 				symbol := " "
+
+				// TO DO: print all symbols
 
 				// Check if there is a boat at this position
 				for _, boatPosition := range allBoatsPositions {
 					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
-						symbol = "O"
+						symbol = "■"
 					}
 				}
 

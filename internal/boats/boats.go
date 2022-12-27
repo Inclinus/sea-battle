@@ -25,6 +25,9 @@ type Boat struct {
 	Size uint8
 }
 
+/**
+ * Returns true if the boat is overlapping another one, false otherwise.
+ */
 func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
 	for _, b := range boats {
 		for _, p := range b.Position {
@@ -33,6 +36,19 @@ func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
 					return true
 				}
 			}
+		}
+	}
+
+	return false
+}
+
+/**
+ * Returns true if the boat is out of the board, false otherwise.
+ */
+func isBoatOutOfBoard(boat Boat) bool {
+	for _, p := range boat.Position {
+		if (p.X < 0 || p.X > 9 || p.Y < 0 || p.Y > 9) {
+			return true
 		}
 	}
 
@@ -130,10 +146,9 @@ func GenerateRandomBoats() (boats [5]Boat) {
 			// Create boat
 			boat := Boat{position, direction, size}
 
-			// Append boat to the list if it doesn't overlap another one
-			// If not, it will regenerate the boat
-			// by going back to the beginning of the loop
-			if (!isBoatOverlapping(boat, boats)) {
+			// Check if boat is out of the board && if it's overlapping another one
+			// If it's not, push it to the array & break the loop
+			if (!isBoatOverlapping(boat, boats) && !isBoatOutOfBoard(boat)) {
 				boats[i] = boat
 				break
 			}

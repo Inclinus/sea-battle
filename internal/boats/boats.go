@@ -23,6 +23,7 @@ type Boat struct {
 	Position []utils.Position
 	Direction string
 	Size uint8
+	Destroyed bool
 }
 
 /**

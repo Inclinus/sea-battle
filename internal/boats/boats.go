@@ -107,7 +107,7 @@ func GenerateRandomBoats() (boats [5]Boat) {
 				if (i == 0) {
 					// Push the first position
 					position = append(position, utils.Position{
-						X: byte(rand.Intn(11)),
+						X: uint8(rand.Intn(11)),
 						Y: uint8(rand.Intn(11)),
 					})
 				} else {

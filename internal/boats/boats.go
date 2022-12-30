@@ -23,6 +23,7 @@ type Boat struct {
 	Position []utils.Position
 	Direction string
 	Size uint8
+	Destroyed bool
 }
 
 /**
@@ -144,7 +145,7 @@ func GenerateRandomBoats() (boats [5]Boat) {
 			}
 
 			// Create boat
-			boat := Boat{position, direction, size}
+			boat := Boat{position, direction, size, false}
 
 			// Check if boat is out of the board && if it's overlapping another one
 			// If it's not, push it to the array & break the loop

@@ -1,10 +1,9 @@
 package main
 
 import (
-	"sea-battle/internal/menu"
 	"fmt"
-	"internal/ip"
 	"net/http"
+	"sea-battle/internal/menu"
 )
 
 // Function to print in navigator with Fprintln
@@ -27,39 +26,40 @@ func printInNav(msg string, w *http.ResponseWriter) {
 
 // Handle the hit request
 func hitHandler(writer http.ResponseWriter, request *http.Request) {
-	switch request.Method {
-	case http.MethodPost:
-	default:
-		printLnInNav("Bad Request", &writer)
-	}
+	go func() {
+		switch request.Method {
+		case http.MethodPost:
+		default:
+			printLnInNav("Bad Request", &writer)
+		}
+	}()
 }
 
 // Handle boats request
 func boatsHandler(writer http.ResponseWriter, request *http.Request) {
-	switch request.Method {
-	case http.MethodGet:
-	default:
-		printLnInNav("Bad Request", &writer)
-	}
+	go func() {
+		switch request.Method {
+		case http.MethodGet:
+		default:
+			printLnInNav("Bad Request", &writer)
+		}
+	}()
 }
 
 // Handle board request
 func boardHandler(writer http.ResponseWriter, request *http.Request) {
-	switch request.Method {
-	case http.MethodGet:
-	default:
-		printLnInNav("Bad Request", &writer)
-	}
+	go func() {
+		switch request.Method {
+		case http.MethodGet:
+		default:
+			printLnInNav("Bad Request", &writer)
+		}
+	}()
 }
 
-func main() {
-	menu.DisplayMenu()
-	ip, port := ip.SplitIpAndPort("192.168.1.1:80")
-	fmt.Printf("IP: %s\nPort: %d\n", ip, port)
-
+func launchServer() {
 	http.HandleFunc("/board", boardHandler)
 	http.HandleFunc("/boats", boatsHandler)
-
 	http.HandleFunc("/hit", hitHandler)
 
 	err := http.ListenAndServe(":4567", nil)
@@ -67,4 +67,10 @@ func main() {
 		fmt.Printf("ERROR OCCURRED WHILE LAUNCHING SERVER :\n%v", err)
 		return
 	}
+}
+
+func main() {
+	go launchServer()
+
+	menu.DisplayMenu()
 }

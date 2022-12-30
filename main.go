@@ -1,6 +1,7 @@
 package main
 
 import (
+	"sea-battle/internal/menu"
 	"fmt"
 	"internal/ip"
 	"net/http"
@@ -52,6 +53,7 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
+	menu.DisplayMenu()
 	ip, port := ip.SplitIpAndPort("192.168.1.1:80")
 	fmt.Printf("IP: %s\nPort: %d\n", ip, port)
 

@@ -62,10 +62,15 @@ func PrintEmptyBoard() {
 func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
 
-	// Concatenate all boats' positions
-	var allBoatsPositions []utils.Position
+	// Get all alive & destroyed boats positions
+	var aliveBoatsPositions []utils.Position
+	var destroyedBoatsPositions []utils.Position
 	for _, boat := range boats {
-		allBoatsPositions = append(allBoatsPositions, boat.Position...)
+		if boat.Destroyed {
+			destroyedBoatsPositions = append(destroyedBoatsPositions, boat.Position...)
+		} else {
+			aliveBoatsPositions = append(aliveBoatsPositions, boat.Position...)
+		}
 	}
 
 	for i := 1; i <= 10; i++ {
@@ -77,26 +82,33 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 				/*
 					Symbols:
 					■ -> boat
-					0 -> missed shot
+					O -> missed shot
 					X -> hit shot
 					# -> destroyed boat
 				*/
 
 				symbol := " "
 
-				// TO DO: print all symbols
-
-				// Check if there is a boat at this position
-				for _, boatPosition := range allBoatsPositions {
+				// Check if there is a boat alive at this position
+				for _, boatPosition := range aliveBoatsPositions {
 					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
 						symbol = "■"
 					}
 				}
 
+				// Check if there is a destroyed boat at this position
+				for _, boatPosition := range destroyedBoatsPositions {
+					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
+						symbol = "#"
+					}
+				}
+
 				// Check if there is a shot at this position
 				for _, shot := range shots {
-					if shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
+					if shot.Hit && shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
 						symbol = "X"
+					} else if shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
+						symbol = "O"
 					}
 				}
 

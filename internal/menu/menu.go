@@ -102,7 +102,6 @@ func DisplayMenu() {
 		case 2:
 			//Attack or start the game
 
-			// 1 ->
 			shots.MainHITTEST()
 
 		case 3:

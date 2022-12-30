@@ -24,10 +24,12 @@ type Shot struct {
 
 var AllShots []Shot
 
+// Function to return an array of all shots
 func GetShots() []Shot {
 	return AllShots
 }
 
+// Function to check if a shot is a hit or not and return a boolean
 func IsShot(boats [5]boats.Boat, position utils.Position) bool {
 
 	// Concatenate all boats' positions
@@ -53,7 +55,7 @@ func requestHit(clientIP IP, pos utils.Position) {
 
 	jsonValue, _ := json.Marshal(pos)
 	request, err := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
-	// set HTTP request header Content-Type
+	//set HTTP request header Content-Type (optional)
 	//req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	if err != nil {
 		fmt.Println(err)

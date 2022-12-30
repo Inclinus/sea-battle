@@ -93,14 +93,17 @@ func DisplayMenu() {
 			//check the board state
 			boats := boats.GenerateRandomBoats()
 
-			// Create an array of allShots
-			var allShots []shots.Shot
+			// Get All Shots
+			allShots := shots.GetShots()
 
 			// Print board
 			board.PrintBoard(boats, allShots)
 
 		case 2:
 			//Attack or start the game
+
+			// 1 ->
+			shots.MainHITTEST()
 
 		case 3:
 			ManageAliases()

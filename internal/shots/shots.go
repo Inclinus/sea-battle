@@ -46,36 +46,6 @@ func IsShot(boats [5]boats.Boat, position utils.Position) bool {
 	return false
 }
 
-func functionHit(w http.ResponseWriter, req *http.Request) {
-	switch req.Method {
-	case http.MethodPost:
-		var pos utils.Position
-		err := json.NewDecoder(req.Body).Decode(&pos)
-
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		fmt.Println(pos.X)
-		fmt.Println(pos.Y)
-
-		boats := boats.GenerateRandomBoats()
-
-		result := IsShot(boats, pos)
-
-		AllShots = append(AllShots, Shot{Position: pos, Hit: true})
-
-		fmt.Println("------------------")
-		fmt.Println(result)
-
-		// TODO : Return the result of the shot
-		//fmt.Fprintf(w, "TEST RETURN RESULT\n")
-	default:
-		fmt.Fprintf(w, "Ceci n'est pas une requète POST !\n")
-	}
-}
-
 func requestHit(clientIP IP, pos utils.Position) {
 
 	port := strconv.Itoa(int(clientIP.port))
@@ -101,19 +71,12 @@ func requestHit(clientIP IP, pos utils.Position) {
 	fmt.Println(bodyString)
 }
 
-func srvWeb(channel chan int) {
-	http.HandleFunc("/hit", functionHit)
-	http.ListenAndServe(":9000", nil)
-}
-
 func MainHITTEST() {
-	channel := make(chan int)
-	go srvWeb(channel)
 
 	// TODO: Select an aliases instead of IP
 	var clientIP IP
 	clientIP.ip = "127.0.0.1"
-	clientIP.port = 9000
+	clientIP.port = 4567
 
 	requestHit(clientIP, utils.Position{X: 8, Y: 7})
 }

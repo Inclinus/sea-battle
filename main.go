@@ -63,7 +63,7 @@ func launchServer() {
 	http.HandleFunc("/boats", boatsHandler)
 	http.HandleFunc("/hit", hitHandler)
 
-	err := http.ListenAndServe(":4568", nil)
+	err := http.ListenAndServe(":4567", nil)
 	if err != nil {
 		fmt.Printf("ERROR OCCURRED WHILE LAUNCHING SERVER :\n%v", err)
 		return

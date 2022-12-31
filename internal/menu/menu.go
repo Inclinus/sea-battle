@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"sea-battle/internal/ip"
 
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
@@ -58,7 +59,7 @@ func ManageAliases() {
 		case 5:
 			ClearScreen()
 			fmt.Println("\nRetour au Menu Principal!\n")
-
+			ip.SaveAlias()
 		default:
 			ClearScreen()
 			fmt.Println("\nVotre choix doit etre entre 1 et 5 !\n")

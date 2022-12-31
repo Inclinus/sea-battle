@@ -109,8 +109,7 @@ func GetAlias() map[string]IP {
 	return Aliases
 }
 
-func InitAliases() map[string]IP {
+func InitAliases() {
 	Aliases = make(map[string]IP)
 	ReceiveAlias()
-	return Aliases
 }

@@ -21,8 +21,8 @@ type User struct {
 	Ip       IP
 }
 
-// SplitIpAndPort This function split an ip "192.168.0.1:8080" to a string "192.168.0.1" and a port 8080 as uint16.
-func SplitIpAndPort(str string) (string, uint16) {
+// SplitIpAndPort This function split an ip "192.168.0.1:8080" to an IP struct with : as IP "192.168.0.1" as string and as PORT 8080 as uint16.
+func SplitIpAndPort(str string) IP {
 	split := strings.Split(str, ":")
 	ip, port := split[0], split[1]
 
@@ -33,18 +33,12 @@ func SplitIpAndPort(str string) (string, uint16) {
 		panic(err)
 	}
 
-	return ip, ui
-
+	return IP{ip: ip, port: ui}
 }
 
 // This function add an association between a provided IP and a provided username.
 func addAlias(ip string, username string) {
-	realIp, port := SplitIpAndPort(ip)
-	ipStruct := IP{
-		ip:   realIp,
-		port: port,
-	}
-	(Aliases)[username] = ipStruct
+	(Aliases)[username] = SplitIpAndPort(ip)
 }
 
 // This function displays all the associations betweens IP and usernames.

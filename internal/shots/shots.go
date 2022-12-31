@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/utils"
@@ -17,7 +17,6 @@ type IP struct {
 }
 
 type Shot struct {
-	// Player => To do in another branch
 	Position utils.Position
 	Hit      bool
 }
@@ -44,7 +43,6 @@ func IsShot(boats [5]boats.Boat, position utils.Position) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
@@ -62,7 +60,7 @@ func requestHit(clientIP IP, pos utils.Position) {
 		return
 	}
 	defer request.Body.Close()
-	body, err := ioutil.ReadAll(request.Body)
+	body, err := io.ReadAll(request.Body)
 
 	if err != nil {
 		fmt.Printf("Reading body failed: %s", err)

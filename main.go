@@ -40,11 +40,11 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 
 		if err != nil {
 			fmt.Println(err)
-			//return
+			return
 		}
 
-		fmt.Println(pos.X)
-		fmt.Println(pos.Y)
+		//fmt.Println(pos.X)
+		//fmt.Println(pos.Y)
 
 		boats := boats.GenerateRandomBoats()
 
@@ -55,11 +55,11 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 
 		allShots = append(allShots, shots.Shot{Position: pos, Hit: result})
 
-		fmt.Println("------------------")
-		fmt.Println(result)
-		fmt.Println("------------------")
+		//fmt.Println("------------------")
+		//fmt.Println(result)
+		//fmt.Println("------------------")
 
-		// TODO : Return the result of the shot
+		// Return the result of the shot
 		printLnInNav(resultConverted, &writer)
 	default:
 		printLnInNav("Bad Request", &writer)

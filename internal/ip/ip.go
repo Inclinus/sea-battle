@@ -83,4 +83,3 @@ func testAliases(aliases *map[string]IP) {
 	removeAlias(aliases, "Noam")
 }
 */
-}

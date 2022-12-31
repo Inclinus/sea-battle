@@ -71,9 +71,7 @@ func launchServer() {
 }
 
 func main() {
-
 	go launchServer()
-	importedAliases := ip.GetAlias()
-	ip.ReceiveAlias(&importedAliases)
+	ip.InitAliases()
 	menu.DisplayMenu()
 }

@@ -9,9 +9,16 @@ import (
 	"strings"
 )
 
+var Aliases map[string]IP
+
 type IP struct {
 	ip   string
 	port uint16
+}
+
+type User struct {
+	Username string
+	Ip       IP
 }
 
 // SplitIpAndPort This function split an ip "192.168.0.1:8080" to a string "192.168.0.1" and a port 8080 as uint16.
@@ -31,25 +38,25 @@ func SplitIpAndPort(str string) (string, uint16) {
 }
 
 // This function add an association between a provided IP and a provided username.
-func addAlias(aliases *map[string]IP, ip string, username string) {
+func addAlias(ip string, username string) {
 	realIp, port := SplitIpAndPort(ip)
 	ipStruct := IP{
 		ip:   realIp,
 		port: port,
 	}
-	(*aliases)[username] = ipStruct
+	(Aliases)[username] = ipStruct
 }
 
 // This function displays all the associations betweens IP and usernames.
-func displayAliases(aliases *map[string]IP) {
-	for key, value := range *aliases {
+func displayAliases() {
+	for key, value := range Aliases {
 		fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
 	}
 }
 
 // This function displays the associated IP of the username provided.
-func displayAlias(aliases *map[string]IP, username string) {
-	for key, value := range *aliases {
+func displayAlias(username string) {
+	for key, value := range Aliases {
 		if key == username {
 			fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
 		}
@@ -57,18 +64,18 @@ func displayAlias(aliases *map[string]IP, username string) {
 }
 
 // This function remove the associated IP of the username provided.
-func removeAlias(aliases *map[string]IP, username string) {
-	for key, _ := range *aliases {
+func removeAlias(username string) {
+	for key, _ := range Aliases {
 		if key == username {
-			delete(*aliases, username)
+			delete(Aliases, username)
 			fmt.Println(username + " has been deleted.")
 		}
 	}
 }
 
 // This function returns the IP of a provided username, returning IP and PORT.
-func getIpOf(username string, aliases *map[string]IP) (string, uint16) {
-	for key, value := range *aliases {
+func getIpOf(username string) (string, uint16) {
+	for key, value := range Aliases {
 		if key == username {
 			return value.ip, value.port
 		}
@@ -76,62 +83,34 @@ func getIpOf(username string, aliases *map[string]IP) (string, uint16) {
 	return "", 0
 }
 
-type User struct {
-	Username string
-	Ip       string
-	Port     uint16
-}
-
 // This function allows to store every alias in a json file
-func SaveAlias(aliases *map[string]IP) {
-
-	user := []User{}
-	for key, value := range *aliases {
-		user_1 := User{Username: key, Ip: value.ip, Port: value.port}
-		user = append(user, user_1)
+func SaveAlias() {
+	var userList []User
+	for key, value := range Aliases {
+		userList = append(userList, User{Username: key, Ip: IP{ip: value.ip, port: value.port}})
 	}
-	//package this data as json data
-	finalJson, err := json.MarshalIndent(user, "", "")
+	finalJson, err := json.MarshalIndent(userList, "", "")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(finalJson))
-	//fmt.Println(user)
 	_ = ioutil.WriteFile("alias.json", finalJson, 0644)
-
 }
 
-func ReceiveAlias(aliases *map[string]IP) {
-	users := []User{}
+func ReceiveAlias() {
+	var users []User
 	file, _ := os.ReadFile("alias.json")
 	_ = json.Unmarshal(file, &users)
 	for indexUser := range users {
-		ip := users[indexUser].Ip
-		port := users[indexUser].Port
-		ipStruct := IP{
-			ip:   ip,
-			port: port,
-		}
-		(*aliases)[users[indexUser].Username] = ipStruct
+		(Aliases)[users[indexUser].Username] = users[indexUser].Ip
 	}
 }
 
-/*
-func testAliases(aliases *map[string]IP) {
-	addAlias(aliases, "192.168.0.1:55542", "Noam")
-	i, p := getIpOff("Noam", aliases)
-	fmt.Printf("%s:%d\n", i, p)
-	displayAliases(aliases)
-	displayAlias(aliases, "Noam")
-	removeAlias(aliases, "Noam")
-}
-*/
-
 func GetAlias() map[string]IP {
-	aliases := make(map[string]IP)
-	//addAlias(&aliases, "1.1.1.1:1234", "charbel")
-	//addAlias(&aliases, "1.1.0.1:1274", "thibault")
-	//addAlias(&aliases, "1.10.1.1:1284", "noam")
-	//SaveAlias(&aliases)
-	return aliases
+	return Aliases
+}
+
+func InitAliases() map[string]IP {
+	Aliases = make(map[string]IP)
+	ReceiveAlias()
+	return Aliases
 }

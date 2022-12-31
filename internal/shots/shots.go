@@ -11,6 +11,7 @@ import (
 	"strconv"
 )
 
+// TODO : Remove at merge
 type IP struct {
 	ip   string
 	port uint16

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"sea-battle/internal/ip"
 	"sea-battle/internal/menu"
 )
 
@@ -62,7 +63,7 @@ func launchServer() {
 	http.HandleFunc("/boats", boatsHandler)
 	http.HandleFunc("/hit", hitHandler)
 
-	err := http.ListenAndServe(":4567", nil)
+	err := http.ListenAndServe(":4568", nil)
 	if err != nil {
 		fmt.Printf("ERROR OCCURRED WHILE LAUNCHING SERVER :\n%v", err)
 		return
@@ -70,7 +71,9 @@ func launchServer() {
 }
 
 func main() {
-	go launchServer()
 
+	go launchServer()
+	importedAliases := ip.GetAlias()
+	ip.ReceiveAlias(&importedAliases)
 	menu.DisplayMenu()
 }

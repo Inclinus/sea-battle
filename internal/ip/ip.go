@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -83,21 +84,36 @@ type User struct {
 
 // This function allows to store every alias in a json file
 func SaveAlias(aliases *map[string]IP) {
+
 	user := []User{}
 	for key, value := range *aliases {
 		user_1 := User{Username: key, Ip: value.ip, Port: value.port}
 		user = append(user, user_1)
-
-		//package this data as json data
-		finalJson, err := json.MarshalIndent(user, "", "")
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println(string(finalJson))
-		//fmt.Println(user)
-		_ = ioutil.WriteFile("users_list.json", finalJson, 0644)
 	}
+	//package this data as json data
+	finalJson, err := json.MarshalIndent(user, "", "")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(finalJson))
+	//fmt.Println(user)
+	_ = ioutil.WriteFile("alias.json", finalJson, 0644)
 
+}
+
+func ReceiveAlias(aliases *map[string]IP) {
+	users := []User{}
+	file, _ := os.ReadFile("alias.json")
+	_ = json.Unmarshal(file, &users)
+	for indexUser := range users {
+		ip := users[indexUser].Ip
+		port := users[indexUser].Port
+		ipStruct := IP{
+			ip:   ip,
+			port: port,
+		}
+		(*aliases)[users[indexUser].Username] = ipStruct
+	}
 }
 
 /*
@@ -111,9 +127,11 @@ func testAliases(aliases *map[string]IP) {
 }
 */
 
-func main() {
+func GetAlias() map[string]IP {
 	aliases := make(map[string]IP)
-	//testAliases(&aliases)
-	SaveAlias(&aliases)
-
+	//addAlias(&aliases, "1.1.1.1:1234", "charbel")
+	//addAlias(&aliases, "1.1.0.1:1274", "thibault")
+	//addAlias(&aliases, "1.10.1.1:1284", "noam")
+	//SaveAlias(&aliases)
+	return aliases
 }

@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"sea-battle/internal/ip"
 
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
@@ -60,7 +61,7 @@ func ManageAliases() {
 		case 5:
 			ClearScreen()
 			fmt.Println("\nRetour au Menu Principal!\n")
-
+			ip.SaveAlias()
 		default:
 			ClearScreen()
 			fmt.Println("\nVotre choix doit etre entre 1 et 5 !\n")
@@ -148,7 +149,6 @@ func DisplayMenu() {
 
 		switch choice {
 		case 1:
-
 			ClearScreen()
 			//check the board state
 			boats := boats.GenerateRandomBoats()
@@ -162,7 +162,6 @@ func DisplayMenu() {
 		case 2:
 			//Attack or start the game
 			ClearScreen()
-
 		case 3:
 			ClearScreen()
 			ManageAliases()
@@ -188,4 +187,8 @@ func DisplayMenu() {
 			fmt.Println("\nVotre choix doit etre entre 1 et 7 !\n")
 		}
 	}
+}
+
+func main() {
+	DisplayMenu()
 }

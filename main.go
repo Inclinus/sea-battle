@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"sea-battle/internal/ip"
 	"sea-battle/internal/menu"
 )
 
@@ -71,6 +72,6 @@ func launchServer() {
 
 func main() {
 	go launchServer()
-
+	ip.InitAliases()
 	menu.DisplayMenu()
 }

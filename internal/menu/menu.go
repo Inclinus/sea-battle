@@ -5,13 +5,46 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	"sea-battle/internal/ip"
-
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/ip"
 	"sea-battle/internal/shots"
+	"strconv"
 )
+
+var clearScreen map[string]func()
+
+// this function initializes the clearScreen variable for MacOS, linux and windows
+func init() {
+	clearScreen = make(map[string]func())
+
+	clearScreen["darwin"] = func() {
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+
+	clearScreen["linux"] = func() {
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+
+	clearScreen["windows"] = func() {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+}
+
+// this function will clear all the previously entered commands
+// ONLY IF THE OS IS SUPPORTED
+func ClearScreen() {
+	function, exists := clearScreen[runtime.GOOS]
+	if exists {
+		function()
+	}
+}
 
 // display menu choices
 func DisplayChoices() {
@@ -26,45 +59,171 @@ func DisplayChoices() {
 		"Quel est votre choix ?")
 }
 
+// this function is used to add an alias, if the user wants to add many alias simultaneously, he must tap "o" as a yes
+func AliasAddition() {
+
+	var name string
+	var userIp string
+	var response string
+
+	for true {
+		fmt.Println("Quel est le nom de la personne que vous souhaitez ajouter ?")
+		fmt.Scanf("%s\n", &name)
+
+		fmt.Println("Quel est son IP ? (sous la forme 127.0.0.1:2555)?")
+		fmt.Scanf("%s\n", &userIp)
+
+		ip.AddAlias(userIp, name)
+
+		a := ip.GetAlias()
+		for key, value := range *a {
+			if key == name {
+				fmt.Println("La personne " + key + " a bien été ajoutée avec l'IP " + value.Ip + " et le Port " + strconv.Itoa(int(value.Port)) + ".")
+			}
+		}
+
+	myloop:
+		for true {
+			fmt.Println("Voulez-vous ajouter une autre personne ? (o/n)")
+			fmt.Scanf("%s\n", &response)
+
+			switch response {
+			case "o":
+				ClearScreen()
+				break myloop
+			case "n":
+				ClearScreen()
+				return
+			default:
+				ClearScreen()
+				fmt.Println("Votre choix doit strictement etre soit oui \"o\" soit non \"n\"")
+			}
+		}
+	}
+}
+
+// this function is used to search an alias, if the user wants to search many alias simultaneously, he must tap "o" as a yes
+func searchAlias() {
+
+	var name string
+	var response string
+	a := ip.GetAlias()
+
+	for true {
+		var found bool = false
+		fmt.Println("De quelle personne voulez-vous voir l'IP ?")
+		fmt.Scanf("%s\n", &name)
+
+		for key := range *a {
+			//fmt.Println(key)
+			if name == key {
+				ip.DisplayAlias(name)
+				found = true
+				break
+			}
+		}
+		if found == false {
+			fmt.Println(name + " n'a pas été trouvé.")
+		}
+	myloop:
+		for true {
+			fmt.Println("Voulez-vous voir l'IP d'une autre personne ? (o/n)")
+			fmt.Scanf("%s\n", &response)
+
+			switch response {
+			case "o":
+				ClearScreen()
+				break myloop
+			case "n":
+				ClearScreen()
+				return
+			default:
+				ClearScreen()
+				fmt.Println("Votre choix doit strictement etre soit oui \"o\" soit non \"n\"")
+			}
+		}
+	}
+}
+
+// this function is used to delete an alias, if the user wants to delete many alias simultaneously, he must tap "o" as a yes
+func deleteFromAlias() {
+	var name string
+	var response string
+	a := ip.GetAlias()
+
+	for true {
+		var found bool = false
+
+		fmt.Println("Quel est le nom de la personne que vous souhaitez supprimer ?")
+		fmt.Scanf("%s\n", &name)
+
+		for key := range *a {
+			//fmt.Println(key)
+			if name == key {
+				ip.RemoveAlias(name)
+				found = true
+				break
+			}
+		}
+		if found == false {
+			fmt.Println(name + " n'a pas été trouvé, il n'a donc pas été supprimé.")
+		}
+	myloop:
+		for true {
+			fmt.Println("Voulez-vous supprimer une autre personne ? (o/n)")
+			fmt.Scanf("%s\n", &response)
+
+			switch response {
+			case "o":
+				ClearScreen()
+				break myloop
+			case "n":
+				ClearScreen()
+				return
+			default:
+				ClearScreen()
+				fmt.Println("Votre choix doit strictement etre soit oui \"o\" soit non \"n\"")
+			}
+		}
+	}
+}
+
+// the sub-menu for managing aliases
 func ManageAliases() {
 
 	var ch int
+
 	for ch != 5 {
 		fmt.Println("Sous-Menu pour la Gestion des Alias :\n" +
-			"1 - Afficher les Alias\n" +
-			"2 - Afficher l’ip du joueur\n" +
-			"3 - Ajouter un Alias\n" +
-			"4 - Retirer un Alias\n" +
-			"5 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
-			"Quel est votre choix ?\n")
+			"1- Afficher les Alias\n" +
+			"2- Afficher l’ip du joueur\n" +
+			"3- Ajouter un Alias\n" +
+			"4- Retirer un Alias\n" +
+			"5- Quitter le Sous-Menu et retourner au Menu Principal\n\n" +
+			"Quel est votre choix ?")
 
 		fmt.Scanf("%d\n", &ch)
 
 		switch ch {
 		case 1:
 			ClearScreen()
-			//display all the aliases
-			fmt.Println("Voici la liste des alias : " + ip.displayAliases())
-
+			ip.DisplayAliases()
 		case 2:
 			ClearScreen()
-			//display the ip of the player
-
+			searchAlias()
 		case 3:
 			ClearScreen()
-			//Add an alias
-
+			AliasAddition()
 		case 4:
 			ClearScreen()
-			//remove an alias
-
+			deleteFromAlias()
 		case 5:
 			ClearScreen()
 			fmt.Println("\nRetour au Menu Principal!\n")
 			ip.SaveAlias()
 		default:
 			ClearScreen()
-			fmt.Println("\nVotre choix doit etre entre 1 et 5 !\n")
+			fmt.Println("\nVotre choix doit etre entre 1 et 5!\n")
 		}
 	}
 }
@@ -95,48 +254,6 @@ func DisplayRules() {
 		"- Par contre, nous ne jouons pas l’un après l’autre ici, mais en temps réel.\n" +
 		"- N’importe quel joueur peut jouer plusieurs fois d’affilée et en continu sans attendre les actions des autres.\n" +
 		"- Ce n’est pas un jeu au tour par tour.\n")
-}
-
-// clearScreen is a map from the operating system name to functions to execute
-// the terminal commands to clear the screen on said OS
-var clearScreen map[string]func()
-
-// init initializes the clearScreen variable for MacOS, Linux, & Windows
-func init() {
-	clearScreen = make(map[string]func())
-
-	clearScreen["darwin"] = func() {
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	}
-
-	clearScreen["linux"] = func() {
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	}
-
-	clearScreen["windows"] = func() {
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	}
-}
-
-// Clears the terminal window of the user if the operating system is supported
-func ClearScreen() {
-	function, exists := clearScreen[runtime.GOOS]
-	if exists {
-		function()
-	}
-}
-
-// IsSupportedOS checks to see if the operating system that the user is running
-// is able to have the terminal cleared
-func IsSupportedOS() bool {
-	_, exists := clearScreen[runtime.GOOS]
-	return exists
 }
 
 // function that displays the menu
@@ -187,8 +304,4 @@ func DisplayMenu() {
 			fmt.Println("\nVotre choix doit etre entre 1 et 7 !\n")
 		}
 	}
-}
-
-func main() {
-	DisplayMenu()
 }

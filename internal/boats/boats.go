@@ -2,9 +2,8 @@ package boats
 
 import (
 	"math/rand"
-	"time"
-
 	"sea-battle/internal/utils"
+	"time"
 )
 
 /*
@@ -14,26 +13,26 @@ import (
 		Destroyed : # # # #
 */
 
-/*	
-	The position is the coordinates of the boat's stern (the back of the boat).
-	Since we can't distinguish the stern & the prow of a boat, the position is
-	simply one of the extremity of the boat.
+/*
+The position is the coordinates of the boat's stern (the back of the boat).
+Since we can't distinguish the stern & the prow of a boat, the position is
+simply one of the extremity of the boat.
 */
 type Boat struct {
-	Position []utils.Position
+	Position  []utils.Position
 	Direction string
-	Size uint8
+	Size      uint8
 	Destroyed bool
 }
 
-/**
+/*
  * Returns true if the boat is overlapping another one, false otherwise.
  */
 func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
 	for _, b := range boats {
 		for _, p := range b.Position {
 			for _, bp := range boat.Position {
-				if (p.X == bp.X && p.Y == bp.Y) {
+				if p.X == bp.X && p.Y == bp.Y {
 					return true
 				}
 			}
@@ -43,12 +42,12 @@ func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
 	return false
 }
 
-/**
+/*
  * Returns true if the boat is out of the board, false otherwise.
  */
 func isBoatOutOfBoard(boat Boat) bool {
 	for _, p := range boat.Position {
-		if (p.X < 1 || p.X > 10 || p.Y < 1 || p.Y > 10) {
+		if p.X < 1 || p.X > 10 || p.Y < 1 || p.Y > 10 {
 			return true
 		}
 	}
@@ -57,19 +56,19 @@ func isBoatOutOfBoard(boat Boat) bool {
 }
 
 /*
-	Returns an array of 5 boats with random positions & direction
+Returns an array of 5 boats with random positions & direction
 
-	It verifies that there is no boat overlapping another one & that the number
-	of boats of same size doesn't exceed the limit, which is:
-		- 1 boat of size 2;
-		- 2 boats of size 3;
-		- 2 boats of size 3.
+It verifies that there is no boat overlapping another one & that the number
+of boats of same size doesn't exceed the limit, which is:
+  - 1 boat of size 2;
+  - 2 boats of size 3;
+  - 2 boats of size 3.
 */
 func GenerateRandomBoats() (boats [5]Boat) {
 	// Seed for randomness
 	rand.Seed(time.Now().UnixMicro())
 
-	var directions = [4]string {
+	var directions = [4]string{
 		"T", // Top
 		"R", // Right
 		"B", // Bottom
@@ -104,8 +103,8 @@ func GenerateRandomBoats() (boats [5]Boat) {
 		for {
 			var position []utils.Position
 
-			for i := uint8(0); i < size; i++{
-				if (i == 0) {
+			for i := uint8(0); i < size; i++ {
+				if i == 0 {
 					// Push the first position
 					position = append(position, utils.Position{
 						X: uint8(rand.Intn(11)),
@@ -149,7 +148,7 @@ func GenerateRandomBoats() (boats [5]Boat) {
 
 			// Check if boat is out of the board && if it's overlapping another one
 			// If it's not, push it to the array & break the loop
-			if (!isBoatOverlapping(boat, boats) && !isBoatOutOfBoard(boat)) {
+			if !isBoatOverlapping(boat, boats) && !isBoatOutOfBoard(boat) {
 				boats[i] = boat
 				break
 			}

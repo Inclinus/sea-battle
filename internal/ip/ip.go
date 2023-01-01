@@ -12,8 +12,8 @@ import (
 var Aliases map[string]IP
 
 type IP struct {
-	ip   string
-	port uint16
+	Ip   string
+	Port uint16
 }
 
 type User struct {
@@ -33,36 +33,37 @@ func SplitIpAndPort(str string) IP {
 		panic(err)
 	}
 
-	return IP{ip: ip, port: ui}
+	return IP{Ip: ip, Port: ui}
 }
 
 // This function add an association between a provided IP and a provided username.
-func addAlias(ip string, username string) {
+func AddAlias(ip string, username string) {
 	(Aliases)[username] = SplitIpAndPort(ip)
 }
 
 // This function displays all the associations betweens IP and usernames.
-func displayAliases() {
+func DisplayAliases() {
+	fmt.Println("Voici les alias que vous avez enregistré :")
 	for key, value := range Aliases {
-		fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
+		fmt.Printf("- %s (%s:%d)\n", key, value.Ip, value.Port)
 	}
 }
 
 // This function displays the associated IP of the username provided.
-func displayAlias(username string) {
+func DisplayAlias(username string) {
 	for key, value := range Aliases {
 		if key == username {
-			fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
+			fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 		}
 	}
 }
 
 // This function remove the associated IP of the username provided.
-func removeAlias(username string) {
+func RemoveAlias(username string) {
 	for key, _ := range Aliases {
 		if key == username {
 			delete(Aliases, username)
-			fmt.Println(username + " has been deleted.")
+			fmt.Println(username + "a bien été supprimé.")
 		}
 	}
 }
@@ -71,7 +72,7 @@ func removeAlias(username string) {
 func getIpOf(username string) (string, uint16) {
 	for key, value := range Aliases {
 		if key == username {
-			return value.ip, value.port
+			return value.Ip, value.Port
 		}
 	}
 	return "", 0
@@ -81,7 +82,7 @@ func getIpOf(username string) (string, uint16) {
 func SaveAlias() {
 	var userList []User
 	for key, value := range Aliases {
-		userList = append(userList, User{Username: key, Ip: IP{ip: value.ip, port: value.port}})
+		userList = append(userList, User{Username: key, Ip: IP{Ip: value.Ip, Port: value.Port}})
 	}
 	finalJson, err := json.MarshalIndent(userList, "", "")
 	if err != nil {
@@ -99,8 +100,8 @@ func ReceiveAlias() {
 	}
 }
 
-func GetAlias() map[string]IP {
-	return Aliases
+func GetAlias() *map[string]IP {
+	return &Aliases
 }
 
 func InitAliases() {

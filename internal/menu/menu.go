@@ -44,7 +44,7 @@ func ManageAliases() {
 			ip.DisplayAliases(&aliases)
 		case 2:
 			//display the ip of the player
-
+			// TODO : REMOVE ?
 		case 3:
 			//Add an alias
 			ip.AddAlias(&aliases, "192.168.12.2:4567", "Noam")
@@ -93,7 +93,13 @@ func ChooseOpponent() {
 	fmt.Println("Veillez entrer l'alias de l'adversaire : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)
-	OpponentActions(selectedAlias)
+	ResultAliasIsExist := ip.AliasIsExist(&aliases, selectedAlias)
+	if ResultAliasIsExist {
+		OpponentActions(selectedAlias)
+	} else {
+		fmt.Println("L'alias n'existe pas !")
+		ChooseOpponent()
+	}
 }
 
 func OpponentActions(selectedAlias string) {

@@ -87,6 +87,15 @@ func DisplayAlias(aliases *map[string]IP, username string) {
 	}
 }
 
+func AliasIsExist(aliases *map[string]IP, username string) bool {
+	for key := range *aliases {
+		if key == username {
+			return true
+		}
+	}
+	return false
+}
+
 // This function remove the associated IP of the username provided.
 func RemoveAlias(aliases *map[string]IP, username string) {
 	for key, _ := range *aliases {

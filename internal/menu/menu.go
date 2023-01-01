@@ -2,11 +2,14 @@ package menu
 
 import (
 	"fmt"
+	"sea-battle/internal/ip"
 
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
 )
+
+var aliases = make(map[string]ip.IP)
 
 func DisplayChoices() {
 	fmt.Println("Menu :\n" +
@@ -38,16 +41,16 @@ func ManageAliases() {
 		switch ch {
 		case 1:
 			//display all the aliases
-
+			ip.DisplayAliases(&aliases)
 		case 2:
 			//display the ip of the player
 
 		case 3:
 			//Add an alias
-
+			ip.AddAlias(&aliases, "192.168.0.1:55542", "Noam")
 		case 4:
 			//remove an alias
-
+			ip.RemoveAlias(&aliases, "Noam")
 		case 5:
 			fmt.Println("Retour au Menu Principal!")
 			fmt.Println("------------------------------")

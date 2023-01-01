@@ -82,7 +82,7 @@ func getIpOf(username string) (string, uint16) {
 func SaveAlias() {
 	var userList []User
 	for key, value := range Aliases {
-		userList = append(userList, User{Username: key, Ip: IP{Ip: value.Ip, Port: value.Port}})
+		userList = append(userList, User{Username: key, Ip: value })
 	}
 	finalJson, err := json.MarshalIndent(userList, "", "")
 	if err != nil {

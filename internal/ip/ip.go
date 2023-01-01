@@ -2,8 +2,11 @@ package ip
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type IP struct {
@@ -37,10 +40,41 @@ func AddAlias(aliases *map[string]IP, ip string, username string) {
 	(*aliases)[username] = ipStruct
 }
 
+func isConnected(clientIP IP) bool {
+	port := strconv.Itoa(int(clientIP.Port))
+	url := "http://" + clientIP.Ip + ":" + port + "/ping"
+
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+	resp, err := client.Get(url)
+	if err != nil {
+		return false
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Une erreur est survenue.")
+		return false
+	}
+	result := string(body)
+	if result == "pong" {
+		return true
+	}
+	return false
+}
+
 // This function displays all the associations betweens IP and usernames.
 func DisplayAliases(aliases *map[string]IP) {
 	for key, value := range *aliases {
-		fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
+		var clientIP IP
+		clientIP.Ip = value.Ip
+		clientIP.Port = value.Port
+		if isConnected(clientIP) {
+			fmt.Printf("%s (%s:%d) | ✔️ Connecté \n", key, value.Ip, value.Port)
+		} else {
+			fmt.Printf("%s (%s:%d) | ❌ Déconnecté \n", key, value.Ip, value.Port)
+		}
+		//fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 	}
 }
 

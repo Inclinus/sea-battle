@@ -29,6 +29,20 @@ func printInNav(msg string, w *http.ResponseWriter) {
 	}
 }
 
+// Handle board request
+func pingHandler(writer http.ResponseWriter, request *http.Request) {
+	//go func() {
+	// GO ROUTINE REMOVED
+	// SAME PROBLEM AS HIT HANDLER
+	switch request.Method {
+	case http.MethodGet:
+		printInNav("pong", &writer)
+	default:
+		printLnInNav("Bad Request", &writer)
+	}
+	//}()
+}
+
 // Handle the hit request
 func hitHandler(writer http.ResponseWriter, request *http.Request) {
 	// GO ROUTINE REMOVED
@@ -92,6 +106,7 @@ func launchServer() {
 	http.HandleFunc("/board", boardHandler)
 	http.HandleFunc("/boats", boatsHandler)
 	http.HandleFunc("/hit", hitHandler)
+	http.HandleFunc("/ping", pingHandler)
 
 	err := http.ListenAndServe(":4567", nil)
 	if err != nil {

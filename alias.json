@@ -1,0 +1,23 @@
+[
+{
+"Username": "asdfg",
+"Ip": {
+"Ip": "124.562.789.0",
+"Port": 1234
+}
+},
+{
+"Username": "thibault",
+"Ip": {
+"Ip": "",
+"Port": 0
+}
+},
+{
+"Username": "charbel",
+"Ip": {
+"Ip": "192.168.110.2",
+"Port": 7890
+}
+}
+]

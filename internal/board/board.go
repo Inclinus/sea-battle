@@ -2,7 +2,6 @@ package board
 
 import (
 	"fmt"
-
 	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
 	"sea-battle/internal/utils"
@@ -36,10 +35,10 @@ import (
 */
 
 /*
-	Prints an empty board for demonstration purposes (eg: tutorial)
+		Prints an empty board for demonstration purposes (eg: tutorial)
 
- 	IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
-	be printed correctly
+	 	IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
+		be printed correctly
 */
 func PrintEmptyBoard() {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
@@ -52,12 +51,11 @@ func PrintEmptyBoard() {
 	fmt.Printf("   -----------------------------------------\n\n")
 }
 
-
 /*
-	Prints a board with shots & boats
- 
-	IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
-	be printed correctly
+Prints a board with shots & boats
+
+IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
+be printed correctly
 */
 func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
@@ -119,4 +117,4 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 	}
 
 	fmt.Printf("   -----------------------------------------\n\n")
- }
+}

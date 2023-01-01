@@ -67,12 +67,12 @@ func RequestHit(clientIP ip.IP, pos utils.Position) {
 	fmt.Println(bodyString)
 }
 
-func MainHITTEST() {
-
-	// TODO: Select an aliases instead of IP
-	var clientIP ip.IP
-	clientIP.Ip = "127.0.0.1"
-	clientIP.Port = 4567
-
-	RequestHit(clientIP, utils.Position{X: 8, Y: 7})
-}
+//func MainHITTEST() {
+//
+//	// TODO: Select an aliases instead of IP
+//	var clientIP ip.IP
+//	clientIP.Ip = "127.0.0.1"
+//	clientIP.Port = 4567
+//
+//	RequestHit(clientIP, utils.Position{X: 8, Y: 7})
+//}

@@ -28,7 +28,7 @@ func SplitIpAndPort(str string) (string, uint16) {
 }
 
 // This function add an association between a provided IP and a provided username.
-func addAlias(aliases *map[string]IP, ip string, username string) {
+func AddAlias(aliases *map[string]IP, ip string, username string) {
 	realIp, port := SplitIpAndPort(ip)
 	ipStruct := IP{
 		ip:   realIp,
@@ -38,7 +38,7 @@ func addAlias(aliases *map[string]IP, ip string, username string) {
 }
 
 // This function displays all the associations betweens IP and usernames.
-func displayAliases(aliases *map[string]IP) {
+func DisplayAliases(aliases *map[string]IP) {
 	for key, value := range *aliases {
 		fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
 	}
@@ -54,7 +54,7 @@ func displayAlias(aliases *map[string]IP, username string) {
 }
 
 // This function remove the associated IP of the username provided.
-func removeAlias(aliases *map[string]IP, username string) {
+func RemoveAlias(aliases *map[string]IP, username string) {
 	for key, _ := range *aliases {
 		if key == username {
 			delete(*aliases, username)

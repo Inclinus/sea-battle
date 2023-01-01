@@ -10,6 +10,7 @@ import (
 	"sea-battle/internal/ip"
 	"sea-battle/internal/utils"
 	"strconv"
+	"time"
 )
 
 type Shot struct {
@@ -48,7 +49,12 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 	url := "http://" + clientIP.Ip + ":" + port + "/hit"
 
 	jsonValue, _ := json.Marshal(pos)
-	request, err := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
+
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+
+	request, err := client.Post(url, "application/json", bytes.NewBuffer(jsonValue))
 	//set HTTP request header Content-Type (optional)
 	//req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	if err != nil {
@@ -63,10 +69,9 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		fmt.Printf("Reading body failed: %s", err)
 		return false
 	}
-	// Log the request body
-	bodyString := string(body)
+	result := string(body)
 	//fmt.Println(bodyString)
-	if bodyString == "true" {
+	if result == "true" {
 		fmt.Println("Touché !")
 	} else {
 		fmt.Println("Raté !")

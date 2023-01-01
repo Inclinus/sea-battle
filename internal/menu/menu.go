@@ -47,7 +47,7 @@ func ManageAliases() {
 
 		case 3:
 			//Add an alias
-			ip.AddAlias(&aliases, "192.168.0.1:55542", "Noam")
+			ip.AddAlias(&aliases, "127.0.0.1:4567", "Noam")
 		case 4:
 			//remove an alias
 			ip.RemoveAlias(&aliases, "Noam")
@@ -104,9 +104,46 @@ func DisplayMenu() {
 
 		case 2:
 			//Attack or start the game
+			//shots.MainHITTEST()
+			ip.DisplayAliases(&aliases)
+			fmt.Println("Veillez entrer l'alias de l'adversaire : ")
+			var selectedAlias string
+			fmt.Scanf("%s\n", &selectedAlias)
+			ip.DisplayAlias(&aliases, selectedAlias)
+			var ch int
+			for ch != 4 {
+				fmt.Println("Sous-Menu de choix d'action sur l'adversaire :\n" +
+					"1 - Afficher son board\n" +
+					"2 - Afficher son nombre de bateau\n" +
+					"3 - Attaquer l'adversaire\n" +
+					"4 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
+					"Quel est votre choix ?\n")
 
-			shots.MainHITTEST()
+				fmt.Scanf("%d\n", &ch)
 
+				switch ch {
+				case 1:
+					//display the board of the opponent
+				case 2:
+					//display the number of boats of the opponent
+
+				case 3:
+					//Attack the opponent
+					fmt.Println("Veillez entrer la case à attaquer : ")
+					var selectedCase string
+					fmt.Scanf("%s\n", &selectedCase)
+					pos := board.GetPositionFromString(selectedCase)
+					//i, p := ip.GetIpOf("Noam", aliases)
+					oppenentIp := ip.GetIpOf2(selectedAlias, &aliases)
+					shots.RequestHit(oppenentIp, pos)
+				case 4:
+					fmt.Println("Retour au Menu Principal!")
+					fmt.Println("------------------------------")
+
+				default:
+					fmt.Println("Votre choix doit etre entre 1 et 5 !")
+				}
+			}
 		case 3:
 			ManageAliases()
 

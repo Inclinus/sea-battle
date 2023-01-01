@@ -64,7 +64,12 @@ func RequestHit(clientIP ip.IP, pos utils.Position) {
 	}
 	// Log the request body
 	bodyString := string(body)
-	fmt.Println(bodyString)
+	//fmt.Println(bodyString)
+	if bodyString == "true" {
+		fmt.Println("Touché !")
+	} else {
+		fmt.Println("Raté !")
+	}
 }
 
 //func MainHITTEST() {

@@ -7,8 +7,8 @@ import (
 )
 
 type IP struct {
-	ip   string
-	port uint16
+	Ip   string
+	Port uint16
 }
 
 // SplitIpAndPort This function split an ip "192.168.0.1:8080" to a string "192.168.0.1" and a port 8080 as uint16.
@@ -31,8 +31,8 @@ func SplitIpAndPort(str string) (string, uint16) {
 func AddAlias(aliases *map[string]IP, ip string, username string) {
 	realIp, port := SplitIpAndPort(ip)
 	ipStruct := IP{
-		ip:   realIp,
-		port: port,
+		Ip:   realIp,
+		Port: port,
 	}
 	(*aliases)[username] = ipStruct
 }
@@ -40,7 +40,7 @@ func AddAlias(aliases *map[string]IP, ip string, username string) {
 // This function displays all the associations betweens IP and usernames.
 func DisplayAliases(aliases *map[string]IP) {
 	for key, value := range *aliases {
-		fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
+		fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 	}
 }
 
@@ -48,7 +48,7 @@ func DisplayAliases(aliases *map[string]IP) {
 func DisplayAlias(aliases *map[string]IP, username string) {
 	for key, value := range *aliases {
 		if key == username {
-			fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)
+			fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 		}
 	}
 }
@@ -64,10 +64,10 @@ func RemoveAlias(aliases *map[string]IP, username string) {
 }
 
 // This function returns the IP of a provided username, returning IP and PORT.
-func getIpOf(username string, aliases *map[string]IP) (string, uint16) {
+func GetIpOf(username string, aliases *map[string]IP) (string, uint16) {
 	for key, value := range *aliases {
 		if key == username {
-			return value.ip, value.port
+			return value.Ip, value.Port
 		}
 	}
 	return "", 0

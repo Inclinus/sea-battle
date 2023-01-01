@@ -7,15 +7,10 @@ import (
 	"io"
 	"net/http"
 	"sea-battle/internal/boats"
+	"sea-battle/internal/ip"
 	"sea-battle/internal/utils"
 	"strconv"
 )
-
-// TODO : Remove at merge
-type IP struct {
-	ip   string
-	port uint16
-}
 
 type Shot struct {
 	Position utils.Position
@@ -47,10 +42,10 @@ func IsShot(boats [5]boats.Boat, position utils.Position) bool {
 	return false
 }
 
-func requestHit(clientIP IP, pos utils.Position) {
+func RequestHit(clientIP ip.IP, pos utils.Position) {
 
-	port := strconv.Itoa(int(clientIP.port))
-	url := "http://" + clientIP.ip + ":" + port + "/hit"
+	port := strconv.Itoa(int(clientIP.Port))
+	url := "http://" + clientIP.Ip + ":" + port + "/hit"
 
 	jsonValue, _ := json.Marshal(pos)
 	request, err := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
@@ -75,9 +70,9 @@ func requestHit(clientIP IP, pos utils.Position) {
 func MainHITTEST() {
 
 	// TODO: Select an aliases instead of IP
-	var clientIP IP
-	clientIP.ip = "127.0.0.1"
-	clientIP.port = 4567
+	var clientIP ip.IP
+	clientIP.Ip = "127.0.0.1"
+	clientIP.Port = 4567
 
-	requestHit(clientIP, utils.Position{X: 8, Y: 7})
+	RequestHit(clientIP, utils.Position{X: 8, Y: 7})
 }

@@ -78,7 +78,7 @@ func AliasAddition() {
 		a := ip.GetAlias()
 		for key, value := range *a {
 			if key == name {
-				fmt.Printf("La personne %s a bien été ajoutée avec l'IP %s et le Port %s.", key, value.Ip, strconv.Itoa(int(value.Port)))
+				fmt.Printf("La personne %s a bien été ajoutée avec l'IP %s et le Port %s.\n", key, value.Ip, strconv.Itoa(int(value.Port)))
 			}
 		}
 
@@ -123,7 +123,7 @@ func searchAlias() {
 			}
 		}
 		if found == false {
-			fmt.Printf("%s n'a pas été trouvé.", name)
+			fmt.Printf("%s n'a pas été trouvé.\n", name)
 		}
 	myloop:
 		for true {
@@ -166,7 +166,7 @@ func deleteFromAlias() {
 			}
 		}
 		if found == false {
-			fmt.Printf("%s n'a pas été trouvé, il n'a donc pas été supprimé.", name)
+			fmt.Printf("%s n'a pas été trouvé, il n'a donc pas été supprimé.\n", name)
 		}
 	myloop:
 		for true {

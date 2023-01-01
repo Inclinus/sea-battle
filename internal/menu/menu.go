@@ -196,7 +196,7 @@ func ManageAliases() {
 	for ch != 5 {
 		fmt.Println("Sous-Menu pour la Gestion des Alias :\n" +
 			"1- Afficher les Alias\n" +
-			"2- Afficher l’ip du joueur\n" +
+			"2- Afficher l’ip d'un joueur\n" +
 			"3- Ajouter un Alias\n" +
 			"4- Retirer un Alias\n" +
 			"5- Quitter le Sous-Menu et retourner au Menu Principal\n\n" +

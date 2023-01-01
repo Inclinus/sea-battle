@@ -45,7 +45,7 @@ func DisplayAliases(aliases *map[string]IP) {
 }
 
 // This function displays the associated IP of the username provided.
-func displayAlias(aliases *map[string]IP, username string) {
+func DisplayAlias(aliases *map[string]IP, username string) {
 	for key, value := range *aliases {
 		if key == username {
 			fmt.Printf("%s (%s:%d)\n", key, value.ip, value.port)

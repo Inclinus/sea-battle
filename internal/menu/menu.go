@@ -123,7 +123,7 @@ func searchAlias() {
 			}
 		}
 		if found == false {
-			fmt.Printf("%s n'a pas été trouvé.", name)
+			fmt.Printf("%s n'a pas été trouvé.\n", name)
 		}
 	myloop:
 		for true {

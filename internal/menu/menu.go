@@ -52,10 +52,7 @@ func ManageAliases() {
 		case 4:
 			//remove an alias
 			//ip.RemoveAlias(&aliases, "Noam")
-			fmt.Println("------------------------------")
-			fmt.Println("Liste des aliases :")
 			ip.DisplayAliases(&aliases)
-			fmt.Println("------------------------------")
 			fmt.Println("Veillez entrer l'alias de l'adversaire : ")
 			var selectedAlias string
 			fmt.Scanf("%s\n", &selectedAlias)
@@ -101,10 +98,7 @@ func DisplayRules() {
 }
 
 func ChooseOpponent() {
-	fmt.Println("------------------------------")
-	fmt.Println("Liste des aliases :")
 	ip.DisplayAliases(&aliases)
-	fmt.Println("------------------------------")
 	fmt.Println("Veillez entrer l'alias de l'adversaire : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)

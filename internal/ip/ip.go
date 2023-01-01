@@ -65,6 +65,8 @@ func isConnected(clientIP IP) bool {
 
 // This function displays all the associations betweens IP and usernames.
 func DisplayAliases(aliases *map[string]IP) {
+	fmt.Println("------------------------------")
+	fmt.Println("Liste des aliases :")
 	for key, value := range *aliases {
 		var clientIP IP
 		clientIP.Ip = value.Ip
@@ -76,6 +78,7 @@ func DisplayAliases(aliases *map[string]IP) {
 		}
 		//fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 	}
+	fmt.Println("------------------------------")
 }
 
 // This function displays the associated IP of the username provided.

@@ -48,6 +48,7 @@ func ManageAliases() {
 		case 3:
 			//Add an alias
 			ip.AddAlias(&aliases, "192.168.12.2:4567", "Noam")
+			ip.AddAlias(&aliases, "127.0.0.1:4567", "Thibaut")
 		case 4:
 			//remove an alias
 			ip.RemoveAlias(&aliases, "Noam")

@@ -72,7 +72,7 @@ func DisplayAliases(aliases *map[string]IP) {
 		if isConnected(clientIP) {
 			fmt.Printf("%s (%s:%d) | ✔️ Connecté \n", key, value.Ip, value.Port)
 		} else {
-			fmt.Printf("%s (%s:%d) | ❌ Déconnecté \n", key, value.Ip, value.Port)
+			fmt.Printf("%s (%s:%d) | ❌ Hors-Ligne \n", key, value.Ip, value.Port)
 		}
 		//fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 	}

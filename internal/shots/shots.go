@@ -52,7 +52,8 @@ func RequestHit(clientIP ip.IP, pos utils.Position) {
 	//set HTTP request header Content-Type (optional)
 	//req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
+		fmt.Println("On dirait que votre adversaire est parti, tant pis !")
 		return
 	}
 	defer request.Body.Close()

@@ -73,6 +73,18 @@ func GetIpOf(username string, aliases *map[string]IP) (string, uint16) {
 	return "", 0
 }
 
+func GetIpOf2(username string, aliases *map[string]IP) IP {
+	for key, value := range *aliases {
+		if key == username {
+			var clientIP IP
+			clientIP.Ip = value.Ip
+			clientIP.Port = value.Port
+			return clientIP
+		}
+	}
+	return IP{}
+}
+
 /*
 func testAliases(aliases *map[string]IP) {
 	addAlias(aliases, "192.168.0.1:55542", "Noam")

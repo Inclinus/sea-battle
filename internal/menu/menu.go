@@ -84,7 +84,7 @@ func DisplayRules() {
 		"- Ce n’est pas un jeu au tour par tour.\n")
 }
 
-func OpponentActions() {
+func ChooseOpponent() {
 	fmt.Println("------------------------------")
 	fmt.Println("Liste des joueurs :")
 	ip.DisplayAliases(&aliases)
@@ -92,6 +92,10 @@ func OpponentActions() {
 	fmt.Println("Veillez entrer l'alias de l'adversaire : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)
+	OpponentActions(selectedAlias)
+}
+
+func OpponentActions(selectedAlias string) {
 	// PRINT DEBUG
 	//ip.DisplayAlias(&aliases, selectedAlias)
 	var ch int
@@ -119,7 +123,10 @@ func OpponentActions() {
 			pos := board.GetPositionFromString(selectedCase)
 			//i, p := ip.GetIpOf("Noam", aliases)
 			oppenentIp := ip.GetIpOf2(selectedAlias, &aliases)
-			shots.RequestHit(oppenentIp, pos)
+			resultHit := shots.RequestHit(oppenentIp, pos)
+			if resultHit == false {
+				ChooseOpponent()
+			}
 		case 4:
 			fmt.Println("Retour au Menu Principal!")
 			fmt.Println("------------------------------")
@@ -150,7 +157,7 @@ func DisplayMenu() {
 
 		case 2:
 			//Attack or start the game
-			OpponentActions()
+			ChooseOpponent()
 		case 3:
 			ManageAliases()
 

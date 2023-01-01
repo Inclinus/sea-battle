@@ -42,7 +42,7 @@ func IsShot(boats [5]boats.Boat, position utils.Position) bool {
 	return false
 }
 
-func RequestHit(clientIP ip.IP, pos utils.Position) {
+func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 
 	port := strconv.Itoa(int(clientIP.Port))
 	url := "http://" + clientIP.Ip + ":" + port + "/hit"
@@ -54,14 +54,14 @@ func RequestHit(clientIP ip.IP, pos utils.Position) {
 	if err != nil {
 		//fmt.Println(err)
 		fmt.Println("On dirait que votre adversaire est parti, tant pis !")
-		return
+		return false
 	}
 	defer request.Body.Close()
 	body, err := io.ReadAll(request.Body)
 
 	if err != nil {
 		fmt.Printf("Reading body failed: %s", err)
-		return
+		return false
 	}
 	// Log the request body
 	bodyString := string(body)
@@ -71,6 +71,7 @@ func RequestHit(clientIP ip.IP, pos utils.Position) {
 	} else {
 		fmt.Println("Raté !")
 	}
+	return true
 }
 
 //func MainHITTEST() {

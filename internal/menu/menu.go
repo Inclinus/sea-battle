@@ -47,8 +47,17 @@ func ManageAliases() {
 			// TODO : REMOVE ?
 		case 3:
 			//Add an alias
-			ip.AddAlias(&aliases, "192.168.12.2:4567", "Noam")
-			ip.AddAlias(&aliases, "127.0.0.1:4567", "Thibaut")
+			// PRINT DE TESTS
+			//ip.AddAlias(&aliases, "192.168.12.2:4567", "Noam")
+			//ip.AddAlias(&aliases, "127.0.0.1:4567", "Thibaut")
+			fmt.Println("Veillez entrer le nom de l'alias que vous voulez ajouter : ")
+			var aliasname string
+			fmt.Scanf("%s\n", &aliasname)
+			fmt.Println("Veillez entrer l'ip et le port ip:port : ")
+			var aliasip string
+			fmt.Scanf("%s\n", &aliasip)
+			ip.AddAlias(&aliases, aliasip, aliasname)
+			fmt.Println("L'alias a bien été ajouté !")
 		case 4:
 			//remove an alias
 			//ip.RemoveAlias(&aliases, "Noam")

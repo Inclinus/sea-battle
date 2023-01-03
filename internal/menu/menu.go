@@ -2,6 +2,8 @@ package menu
 
 import (
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
@@ -287,9 +289,26 @@ func OpponentActions(selectedAlias string) {
 		case 1:
 			ClearScreen()
 			//display the board of the opponent
+
 		case 2:
 			ClearScreen()
-			//display the number of boats of the opponent
+
+			enemyIp := ip.GetIpOf(selectedAlias)
+			res, err := http.Get("http://" + enemyIp.Ip + strconv.FormatUint(uint64(enemyIp.Port), 10) + "/boats")
+			if err != nil {
+				panic(err)
+			}
+
+			// Prevent resource leak
+			defer res.Body.Close()
+
+			// Read the response body
+			body, err := ioutil.ReadAll(res.Body)
+			if err != nil {
+				panic(err)
+			}
+
+			fmt.Println(string(body))
 
 		case 3:
 			ClearScreen()

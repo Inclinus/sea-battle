@@ -5,7 +5,6 @@ import (
 
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
-	"sea-battle/internal/shots"
 )
 
 func DisplayChoices() {
@@ -61,7 +60,7 @@ func ManageAliases() {
 func DisplayCredits() {
 	fmt.Println("Nous souhaitons adresser nos remerciements les plus sincères à Monsieur Karraz qui nous a apporté son aide pour mener à  bien ce projet: " +
 		"\"Jeu de Bataille Navale\"\n" +
-		"Les Contributeurs au cours de ce projet : " +
+		"Les Contributeurs au cours de ce projet : \n" +
 		"- Anto BENEDETTI @opixelum\n" +
 		"- Thibaut LULINSKI @KyatoNS\n" +
 		"- Noam DE MASURE @Inclinus\n" +
@@ -81,6 +80,23 @@ func DisplayRules() {
 		"- Ce n’est pas un jeu au tour par tour.\n")
 }
 
+func init() {
+	var boatsBoard [5]boats.Boat
+	// Create an array of allShots
+	for {
+		choice := "CHOICE"
+		for choice != "O" {
+			boatsBoard = boats.GenerateRandomBoats()
+			board.PrintBoard(boatsBoard)
+			fmt.Println("Voici votre board, est-ce qu'il vous satisfait ? (O/N)")
+			fmt.Scanf("%s\n", &choice)
+		}
+		break
+	}
+	board.InitBoatsBoard(boatsBoard)
+	DisplayMenu()
+}
+
 func DisplayMenu() {
 	var choice int
 
@@ -90,14 +106,9 @@ func DisplayMenu() {
 
 		switch choice {
 		case 1:
-			//check the board state
-			boats := boats.GenerateRandomBoats()
-
-			// Create an array of allShots
-			var allShots []shots.Shot
 
 			// Print board
-			board.PrintBoard(boats, allShots)
+			board.PrintBoard(board.GetBoatsBoard())
 
 		case 2:
 			//Attack or start the game
@@ -110,6 +121,7 @@ func DisplayMenu() {
 
 		case 5:
 			//Statistics
+			// TODO anto & thibaut
 
 		case 6:
 			DisplayCredits()

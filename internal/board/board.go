@@ -35,6 +35,8 @@ import (
 	   -----------------------------------------
 */
 
+var BoatsBoard [5]boats.Boat
+
 /*
 	Prints an empty board for demonstration purposes (eg: tutorial)
 
@@ -52,16 +54,16 @@ func PrintEmptyBoard() {
 	fmt.Printf("   -----------------------------------------\n\n")
 }
 
-
 /*
 	Prints a board with shots & boats
- 
+
 	IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
 	be printed correctly
 */
-func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
+func PrintBoard(boats [5]boats.Boat) {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
 
+	allShots := *shots.GetAllShots()
 	// Get all alive & destroyed boats positions
 	var aliveBoatsPositions []utils.Position
 	var destroyedBoatsPositions []utils.Position
@@ -104,7 +106,7 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 				}
 
 				// Check if there is a shot at this position
-				for _, shot := range shots {
+				for _, shot := range allShots {
 					if shot.Hit && shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
 						symbol = "X"
 					} else if shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
@@ -119,4 +121,12 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 	}
 
 	fmt.Printf("   -----------------------------------------\n\n")
- }
+}
+
+func InitBoatsBoard(bBoard [5]boats.Boat) {
+	BoatsBoard = bBoard
+}
+
+func GetBoatsBoard() [5]boats.Boat {
+	return BoatsBoard
+}

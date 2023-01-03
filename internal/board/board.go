@@ -2,6 +2,8 @@ package board
 
 import (
 	"fmt"
+	"strconv"
+
 	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
 	"sea-battle/internal/utils"
@@ -117,4 +119,16 @@ func PrintBoard(boats [5]boats.Boat, shots []shots.Shot) {
 	}
 
 	fmt.Printf("   -----------------------------------------\n\n")
+}
+
+// This function get a string in parameter (ex: "J6") and return a Position struct
+func GetPositionFromString(inputPos string) utils.Position {
+	var pos utils.Position
+	YtoInt, _ := strconv.Atoi(inputPos[1:2])
+	pos.Y = uint8(YtoInt)
+
+	mapOfCord := map[string]byte{"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10}
+	pos.X = mapOfCord[inputPos[:1]]
+
+	return pos
 }

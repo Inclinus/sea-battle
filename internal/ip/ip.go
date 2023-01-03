@@ -3,10 +3,13 @@ package ip
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var Aliases map[string]IP
@@ -41,12 +44,41 @@ func AddAlias(ip string, username string) {
 	(Aliases)[username] = SplitIpAndPort(ip)
 }
 
+func isConnected(clientIP IP) bool {
+	port := strconv.Itoa(int(clientIP.Port))
+	url := "http://" + clientIP.Ip + ":" + port + "/ping"
+
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+	resp, err := client.Get(url)
+	if err != nil {
+		return false
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Une erreur est survenue.")
+		return false
+	}
+	result := string(body)
+	if result == "pong" {
+		return true
+	}
+	return false
+}
+
 // This function displays all the associations betweens IP and usernames.
 func DisplayAliases() {
-	fmt.Println("Voici les alias que vous avez enregistré :")
+	fmt.Println("------------------------------")
+	fmt.Println("Liste des aliases :")
 	for key, value := range Aliases {
-		fmt.Printf("- %s (%s:%d)\n", key, value.Ip, value.Port)
+		if isConnected(value) {
+			fmt.Printf("%s (%s:%d) | ✔ Connecté \n", key, value.Ip, value.Port)
+		} else {
+			fmt.Printf("%s (%s:%d) | ❌ Hors-Ligne \n", key, value.Ip, value.Port)
+		}
 	}
+	fmt.Println("------------------------------")
 }
 
 // This function displays the associated IP of the username provided.
@@ -56,6 +88,15 @@ func DisplayAlias(username string) {
 			fmt.Printf("%s (%s:%d)\n", key, value.Ip, value.Port)
 		}
 	}
+}
+
+func AliasIsExist(username string) bool {
+	for key := range Aliases {
+		if key == username {
+			return true
+		}
+	}
+	return false
 }
 
 // This function remove the associated IP of the username provided.
@@ -69,20 +110,20 @@ func RemoveAlias(username string) {
 }
 
 // This function returns the IP of a provided username, returning IP and PORT.
-func getIpOf(username string) (string, uint16) {
+func GetIpOf(username string) IP {
 	for key, value := range Aliases {
 		if key == username {
-			return value.Ip, value.Port
+			return IP{Ip: value.Ip, Port: value.Port}
 		}
 	}
-	return "", 0
+	return IP{}
 }
 
 // This function allows to store every alias in a json file
 func SaveAlias() {
 	var userList []User
 	for key, value := range Aliases {
-		userList = append(userList, User{Username: key, Ip: value })
+		userList = append(userList, User{Username: key, Ip: value})
 	}
 	finalJson, err := json.MarshalIndent(userList, "", "")
 	if err != nil {

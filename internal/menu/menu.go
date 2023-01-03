@@ -256,6 +256,61 @@ func DisplayRules() {
 		"- Ce n’est pas un jeu au tour par tour.\n")
 }
 
+func ChooseOpponent() {
+	ip.DisplayAliases()
+	fmt.Println("Veillez entrer l'alias de l'adversaire : ")
+	var selectedAlias string
+	fmt.Scanf("%s\n", &selectedAlias)
+	ResultAliasIsExist := ip.AliasIsExist(selectedAlias)
+	if ResultAliasIsExist {
+		OpponentActions(selectedAlias)
+	} else {
+		fmt.Println("L'alias n'existe pas !")
+		ChooseOpponent()
+	}
+}
+
+func OpponentActions(selectedAlias string) {
+	// PRINT DEBUG
+	//ip.DisplayAlias(&aliases, selectedAlias)
+	var ch int
+	for ch != 4 {
+		fmt.Println("Sous-Menu de choix d'action sur l'adversaire :\n" +
+			"1 - Afficher son board\n" +
+			"2 - Afficher son nombre de bateau\n" +
+			"3 - Attaquer l'adversaire\n" +
+			"4 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
+			"Quel est votre choix ?\n")
+
+		fmt.Scanf("%d\n", &ch)
+
+		switch ch {
+		case 1:
+			//display the board of the opponent
+		case 2:
+			//display the number of boats of the opponent
+
+		case 3:
+			//Attack the opponent
+			fmt.Println("Veillez entrer la case à attaquer : ")
+			var selectedCase string
+			fmt.Scanf("%s\n", &selectedCase)
+			pos := board.GetPositionFromString(selectedCase)
+			oppenentIp := ip.GetIpOf(selectedAlias)
+			resultHit := shots.RequestHit(oppenentIp, pos)
+			if resultHit == false {
+				ChooseOpponent()
+			}
+		case 4:
+			fmt.Println("Retour au Menu Principal!")
+			fmt.Println("------------------------------")
+
+		default:
+			fmt.Println("Votre choix doit etre entre 1 et 5 !")
+		}
+	}
+}
+
 // function that displays the menu
 func DisplayMenu() {
 	var choice int
@@ -270,8 +325,8 @@ func DisplayMenu() {
 			//check the board state
 			boats := boats.GenerateRandomBoats()
 
-			// Create an array of allShots
-			var allShots []shots.Shot
+			// Get All Shots
+			allShots := shots.GetShots()
 
 			// Print board
 			board.PrintBoard(boats, allShots)
@@ -279,6 +334,7 @@ func DisplayMenu() {
 		case 2:
 			//Attack or start the game
 			ClearScreen()
+			ChooseOpponent()
 		case 3:
 			ClearScreen()
 			ManageAliases()

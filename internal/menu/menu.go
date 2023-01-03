@@ -320,7 +320,7 @@ func InitMenu() {
 		choice := "CHOICE"
 		for choice != "O" {
 			boatsBoard = boats.GenerateRandomBoats()
-			board.PrintBoard(boatsBoard)
+			board.PrintBoard(boatsBoard, false)
 			fmt.Println("Voici votre board, est-ce qu'il vous satisfait ? (O/N)")
 			fmt.Scanf("%s\n", &choice)
 		}
@@ -342,7 +342,7 @@ func displayMenu() {
 		case 1:
 			// Print board
 			ClearScreen()
-			board.PrintBoard(board.GetBoatsBoard())
+			board.PrintBoard(board.GetBoatsBoard(), false)
 		case 2:
 			//Attack or start the game
 			ClearScreen()

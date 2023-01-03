@@ -7,5 +7,5 @@ import (
 
 func main() {
 	ip.InitAliases()
-	menu.DisplayMenu()
+	menu.InitMenu()
 }

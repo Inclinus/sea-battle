@@ -310,7 +310,7 @@ func OpponentActions(selectedAlias string) {
 	}
 }
 
-func init() {
+func InitMenu() {
 	var boatsBoard [5]boats.Boat
 	// Create an array of allShots
 	for {
@@ -325,10 +325,10 @@ func init() {
 	}
 	board.InitBoatsBoard(boatsBoard)
 	go server.LaunchServer()
-	DisplayMenu()
+	displayMenu()
 }
 
-func DisplayMenu() {
+func displayMenu() {
 	var choice int
 
 	for choice != 7 {

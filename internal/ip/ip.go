@@ -49,7 +49,7 @@ func isConnected(clientIP IP) bool {
 	url := "http://" + clientIP.Ip + ":" + port + "/ping"
 
 	client := http.Client{
-		Timeout: 5 * time.Second,
+		Timeout: 2 * time.Second,
 	}
 	resp, err := client.Get(url)
 	if err != nil {

@@ -2,9 +2,8 @@ package boats
 
 import (
 	"math/rand"
-	"time"
-
 	"sea-battle/internal/utils"
+	"time"
 )
 
 /*
@@ -26,7 +25,7 @@ type Boat struct {
 	Destroyed bool
 }
 
-/**
+/*
  * Returns true if the boat is overlapping another one, false otherwise.
  */
 func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
@@ -43,7 +42,7 @@ func isBoatOverlapping(boat Boat, boats [5]Boat) bool {
 	return false
 }
 
-/**
+/*
  * Returns true if the boat is out of the board, false otherwise.
  */
 func isBoatOutOfBoard(boat Boat) bool {

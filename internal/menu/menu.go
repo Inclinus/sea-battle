@@ -8,6 +8,7 @@ import (
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/ip"
+	"sea-battle/internal/server"
 	"sea-battle/internal/shots"
 	"strconv"
 )
@@ -15,7 +16,7 @@ import (
 var clearScreen map[string]func()
 
 // this function initializes the clearScreen variable for MacOS, linux and windows
-func init() {
+func initClearScreenVariables() {
 	clearScreen = make(map[string]func())
 
 	clearScreen["darwin"] = func() {
@@ -271,8 +272,6 @@ func ChooseOpponent() {
 }
 
 func OpponentActions(selectedAlias string) {
-	// PRINT DEBUG
-	//ip.DisplayAlias(&aliases, selectedAlias)
 	var ch int
 	for ch != 4 {
 		fmt.Println("Sous-Menu de choix d'action sur l'adversaire :\n" +
@@ -325,6 +324,7 @@ func init() {
 		break
 	}
 	board.InitBoatsBoard(boatsBoard)
+	go server.LaunchServer()
 	DisplayMenu()
 }
 
@@ -337,11 +337,8 @@ func DisplayMenu() {
 
 		switch choice {
 		case 1:
-
-
 			// Print board
 			board.PrintBoard(board.GetBoatsBoard())
-
 		case 2:
 			//Attack or start the game
 			ClearScreen()
@@ -349,24 +346,19 @@ func DisplayMenu() {
 		case 3:
 			ClearScreen()
 			ManageAliases()
-
 		case 4:
 			ClearScreen()
 			DisplayRules()
-
 		case 5:
 			ClearScreen()
 			//Statistics
 			// TODO anto & thibaut
-
 		case 6:
 			ClearScreen()
 			DisplayCredits()
-
 		case 7:
 			ClearScreen()
 			fmt.Println("\nVous avez quitté le programme !\n")
-
 		default:
 			ClearScreen()
 			fmt.Println("\nVotre choix doit etre entre 1 et 7 !\n")

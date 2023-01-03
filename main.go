@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sea-battle/internal/board"
 	"sea-battle/internal/ip"
-	"sea-battle/internal/boats"
 	"sea-battle/internal/menu"
 	"sea-battle/internal/shots"
 	"sea-battle/internal/utils"
@@ -58,17 +58,10 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 
-		//fmt.Println(pos.X)
-		//fmt.Println(pos.Y)
-
-		boats := boats.GenerateRandomBoats()
-
-		result := shots.IsShot(boats, pos)
+		result := shots.IsShot(board.GetBoatsBoard(), pos)
 		resultConverted := strconv.FormatBool(result)
 
-		allShots := shots.GetShots()
-
-		allShots = append(allShots, shots.Shot{Position: pos, Hit: result})
+		shots.AddShot(shots.Shot{Position: pos, Hit: result})
 
 		//fmt.Println("------------------")
 		//fmt.Println(result)

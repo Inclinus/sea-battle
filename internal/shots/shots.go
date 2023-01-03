@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-var AllShots []Shot
-
 type Shot struct {
 	Position utils.Position
 	Hit      bool
@@ -26,9 +24,8 @@ func GetAllShots() *[]Shot {
 
 var AllShots []Shot
 
-// Function to return an array of all shots
-func GetShots() []Shot {
-	return AllShots
+func AddShot(shot Shot) {
+	AllShots = append(AllShots, shot)
 }
 
 // Function to check if a shot is a hit or not and return a boolean
@@ -84,13 +81,3 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 	}
 	return true
 }
-
-//func MainHITTEST() {
-//
-//	// TODO: Select an aliases instead of IP
-//	var clientIP ip.IP
-//	clientIP.Ip = "127.0.0.1"
-//	clientIP.Port = 4567
-//
-//	RequestHit(clientIP, utils.Position{X: 8, Y: 7})
-//}

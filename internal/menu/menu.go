@@ -285,13 +285,16 @@ func OpponentActions(selectedAlias string) {
 
 		switch ch {
 		case 1:
+			ClearScreen()
 			//display the board of the opponent
 		case 2:
+			ClearScreen()
 			//display the number of boats of the opponent
 
 		case 3:
+			ClearScreen()
 			//Attack the opponent
-			fmt.Println("Veillez entrer la case à attaquer : ")
+			fmt.Println("Veuillez entrer la case à attaquer : ")
 			var selectedCase string
 			fmt.Scanf("%s\n", &selectedCase)
 			pos := board.GetPositionFromString(selectedCase)
@@ -338,6 +341,7 @@ func displayMenu() {
 		switch choice {
 		case 1:
 			// Print board
+			ClearScreen()
 			board.PrintBoard(board.GetBoatsBoard())
 		case 2:
 			//Attack or start the game

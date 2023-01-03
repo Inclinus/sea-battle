@@ -25,6 +25,19 @@ type Boat struct {
 	Destroyed bool
 }
 
+// Returns the number of alive boats
+func GetAliveBoats(boats [5]Boat) uint8 {
+	var aliveBoats uint8
+
+	for _, boat := range boats {
+		if !boat.Destroyed {
+			aliveBoats++
+		}
+	}
+
+	return aliveBoats
+}
+
 /*
  * Returns true if the boat is overlapping another one, false otherwise.
  */

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"sea-battle/internal/board"
+	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
 	"sea-battle/internal/utils"
 	"strconv"
@@ -77,6 +78,11 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 	go func() {
 		switch request.Method {
 		case http.MethodGet:
+			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
+
+			fmt.Println("Il reste", aliveBoats, "bateaux en vie.")
+			printLnInNav("Il reste " + strconv.FormatUint(uint64(aliveBoats), 10) + " bateaux en vie.", &writer)
+
 		default:
 			printLnInNav("Bad Request", &writer)
 		}

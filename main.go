@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sea-battle/internal/ip"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/menu"
 	"sea-battle/internal/shots"
@@ -117,6 +118,6 @@ func launchServer() {
 
 func main() {
 	go launchServer()
-
+	ip.InitAliases()
 	menu.DisplayMenu()
 }

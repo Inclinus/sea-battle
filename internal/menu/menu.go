@@ -2,15 +2,51 @@ package menu
 
 import (
 	"fmt"
-	"sea-battle/internal/ip"
-
+	"os"
+	"os/exec"
+	"runtime"
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
+	"sea-battle/internal/ip"
 	"sea-battle/internal/shots"
+	"strconv"
 )
 
-var aliases = make(map[string]ip.IP)
+var clearScreen map[string]func()
 
+// this function initializes the clearScreen variable for MacOS, linux and windows
+func init() {
+	clearScreen = make(map[string]func())
+
+	clearScreen["darwin"] = func() {
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+
+	clearScreen["linux"] = func() {
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+
+	clearScreen["windows"] = func() {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+}
+
+// this function will clear all the previously entered commands
+// ONLY IF THE OS IS SUPPORTED
+func ClearScreen() {
+	function, exists := clearScreen[runtime.GOOS]
+	if exists {
+		function()
+	}
+}
+
+// display menu choices
 func DisplayChoices() {
 	fmt.Println("Menu :\n" +
 		"1 -  Voir l'état du board \n" +
@@ -20,73 +56,184 @@ func DisplayChoices() {
 		"5 -  Statistiques \n" +
 		"6 -  Crédits \n" +
 		"7 -  Quitter la session\n\n" +
-		"Quel est votre choix ? ")
+		"Quel est votre choix ?")
 }
 
+// this function is used to add an alias, if the user wants to add many alias simultaneously, he must tap "o" as a yes
+func AliasAddition() {
+
+	var name string
+	var userIp string
+	var response string
+
+	for true {
+		fmt.Println("Quel est le nom de la personne que vous souhaitez ajouter ?")
+		fmt.Scanf("%s\n", &name)
+
+		fmt.Println("Quel est son IP ? (sous la forme 127.0.0.1:2555)?")
+		fmt.Scanf("%s\n", &userIp)
+
+		ip.AddAlias(userIp, name)
+
+		a := ip.GetAlias()
+		for key, value := range *a {
+			if key == name {
+				fmt.Printf("La personne %s a bien été ajoutée avec l'IP %s et le Port %s.\n", key, value.Ip, strconv.Itoa(int(value.Port)))
+			}
+		}
+
+	myloop:
+		for true {
+			fmt.Println("Voulez-vous ajouter une autre personne ? (o/n)")
+			fmt.Scanf("%s\n", &response)
+
+			switch response {
+			case "o":
+				ClearScreen()
+				break myloop
+			case "n":
+				ClearScreen()
+				return
+			default:
+				ClearScreen()
+				fmt.Println("Votre choix doit strictement etre soit oui \"o\" soit non \"n\"")
+			}
+		}
+	}
+}
+
+// this function is used to search an alias, if the user wants to search many alias simultaneously, he must tap "o" as a yes
+func searchAlias() {
+
+	var name string
+	var response string
+	a := ip.GetAlias()
+
+	for true {
+		var found bool = false
+		fmt.Println("De quelle personne voulez-vous voir l'IP ?")
+		fmt.Scanf("%s\n", &name)
+
+		for key := range *a {
+			//fmt.Println(key)
+			if name == key {
+				ip.DisplayAlias(name)
+				found = true
+				break
+			}
+		}
+		if found == false {
+			fmt.Printf("%s n'a pas été trouvé.\n", name)
+		}
+	myloop:
+		for true {
+			fmt.Println("Voulez-vous voir l'IP d'une autre personne ? (o/n)")
+			fmt.Scanf("%s\n", &response)
+
+			switch response {
+			case "o":
+				ClearScreen()
+				break myloop
+			case "n":
+				ClearScreen()
+				return
+			default:
+				ClearScreen()
+				fmt.Println("Votre choix doit strictement etre soit oui \"o\" soit non \"n\"")
+			}
+		}
+	}
+}
+
+// this function is used to delete an alias, if the user wants to delete many alias simultaneously, he must tap "o" as a yes
+func deleteFromAlias() {
+	var name string
+	var response string
+	a := ip.GetAlias()
+
+	for true {
+		var found bool = false
+
+		fmt.Println("Quel est le nom de la personne que vous souhaitez supprimer ?")
+		fmt.Scanf("%s\n", &name)
+
+		for key := range *a {
+			//fmt.Println(key)
+			if name == key {
+				ip.RemoveAlias(name)
+				found = true
+				break
+			}
+		}
+		if found == false {
+			fmt.Printf("%s n'a pas été trouvé, il n'a donc pas été supprimé.\n", name)
+		}
+	myloop:
+		for true {
+			fmt.Println("Voulez-vous supprimer une autre personne ? (o/n)")
+			fmt.Scanf("%s\n", &response)
+
+			switch response {
+			case "o":
+				ClearScreen()
+				break myloop
+			case "n":
+				ClearScreen()
+				return
+			default:
+				ClearScreen()
+				fmt.Println("Votre choix doit strictement etre soit oui \"o\" soit non \"n\"")
+			}
+		}
+	}
+}
+
+// the sub-menu for managing aliases
 func ManageAliases() {
-	fmt.Println("------------------------------")
+
 	var ch int
 
 	for ch != 5 {
 		fmt.Println("Sous-Menu pour la Gestion des Alias :\n" +
-			"1 - Afficher les Alias\n" +
-			"2 - Afficher l’ip du joueur\n" +
-			"3 - Ajouter un Alias\n" +
-			"4 - Retirer un Alias\n" +
-			"5 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
-			"Quel est votre choix ?\n")
+			"1- Afficher les Alias\n" +
+			"2- Afficher l’ip d'un joueur\n" +
+			"3- Ajouter un Alias\n" +
+			"4- Retirer un Alias\n" +
+			"5- Quitter le Sous-Menu et retourner au Menu Principal\n\n" +
+			"Quel est votre choix ?")
 
 		fmt.Scanf("%d\n", &ch)
 
 		switch ch {
 		case 1:
-			//display all the aliases
-			ip.DisplayAliases(&aliases)
+			ClearScreen()
+			ip.DisplayAliases()
 		case 2:
-			//display the ip of the player
-			// TODO : REMOVE ?
+			ClearScreen()
+			searchAlias()
 		case 3:
-			//Add an alias
-			// PRINT DE TESTS
-			//ip.AddAlias(&aliases, "192.168.12.2:4567", "Noam")
-			//ip.AddAlias(&aliases, "127.0.0.1:4567", "Thibaut")
-			fmt.Println("Veillez entrer le nom de l'alias que vous voulez ajouter : ")
-			var aliasname string
-			fmt.Scanf("%s\n", &aliasname)
-			fmt.Println("Veillez entrer l'ip et le port ip:port : ")
-			var aliasip string
-			fmt.Scanf("%s\n", &aliasip)
-			ip.AddAlias(&aliases, aliasip, aliasname)
-			fmt.Println("L'alias a bien été ajouté !")
+			ClearScreen()
+			AliasAddition()
 		case 4:
-			//remove an alias
-			//ip.RemoveAlias(&aliases, "Noam")
-			ip.DisplayAliases(&aliases)
-			fmt.Println("Veillez entrer l'alias de l'adversaire : ")
-			var selectedAlias string
-			fmt.Scanf("%s\n", &selectedAlias)
-			ResultAliasIsExist := ip.AliasIsExist(&aliases, selectedAlias)
-			if ResultAliasIsExist {
-				ip.RemoveAlias(&aliases, selectedAlias)
-				fmt.Println("L'alias a été supprimé !")
-			} else {
-				fmt.Println("L'alias n'existe pas !")
-				ManageAliases()
-			}
+			ClearScreen()
+			deleteFromAlias()
 		case 5:
-			fmt.Println("Retour au Menu Principal!")
-			fmt.Println("------------------------------")
-
+			ClearScreen()
+			fmt.Println("\nRetour au Menu Principal!\n")
+			ip.SaveAlias()
 		default:
-			fmt.Println("Votre choix doit etre entre 1 et 5 !")
+			ClearScreen()
+			fmt.Println("\nVotre choix doit etre entre 1 et 5!\n")
 		}
 	}
 }
 
+// function that displays the credits of the game, or project
 func DisplayCredits() {
-	fmt.Println("Nous souhaitons adresser nos remerciements les plus sincères à Monsieur Karraz qui nous a apporté son aide pour mener à  bien ce projet: " +
+	fmt.Println("\nNous souhaitons adresser nos remerciements les plus sincères à Monsieur Karraz qui nous " +
+		"a apporté son aide pour mener à  bien ce projet: " +
 		"\"Jeu de Bataille Navale\"\n" +
-		"Les Contributeurs au cours de ce projet : " +
+		"Les Contributeurs au cours de ce projet :\n" +
 		"- Anto BENEDETTI @opixelum\n" +
 		"- Thibaut LULINSKI @KyatoNS\n" +
 		"- Noam DE MASURE @Inclinus\n" +
@@ -94,12 +241,15 @@ func DisplayCredits() {
 		"Merci !\n")
 }
 
+// function that displays the rules of the games
 func DisplayRules() {
-	fmt.Println("La bataille navale est un des jeux de société qui fait amuser petits et grands. La bataille navale est idéale pour passer un moment en famille. " +
+	fmt.Println("\nLa bataille navale est un des jeux de société qui fait amuser petits et grands. " +
+		"La bataille navale est idéale pour passer un moment en famille. " +
 		"\nVoici les règles du jeu : \n\n" +
 		"- La bataille navale se joue sur une grille faisant au moins 10x10.\n" +
 		"- Le joueur doit deviner où se situent les bateaux adverses afin de les couler.\n" +
-		"- Les bateaux devront être placés aléatoirement sur les grilles des joueurs, une case ne peut être occupée que par un morceau de bateau à la fois.\n" +
+		"- Les bateaux devront être placés aléatoirement sur les grilles des joueurs, une case ne peut être " +
+		"occupée que par un morceau de bateau à la fois.\n" +
 		"- Il doit y avoir plusieurs bateaux présents sur le plateau.\n" +
 		"- Par contre, nous ne jouons pas l’un après l’autre ici, mais en temps réel.\n" +
 		"- N’importe quel joueur peut jouer plusieurs fois d’affilée et en continu sans attendre les actions des autres.\n" +
@@ -107,11 +257,11 @@ func DisplayRules() {
 }
 
 func ChooseOpponent() {
-	ip.DisplayAliases(&aliases)
+	ip.DisplayAliases()
 	fmt.Println("Veillez entrer l'alias de l'adversaire : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)
-	ResultAliasIsExist := ip.AliasIsExist(&aliases, selectedAlias)
+	ResultAliasIsExist := ip.AliasIsExist(selectedAlias)
 	if ResultAliasIsExist {
 		OpponentActions(selectedAlias)
 	} else {
@@ -146,8 +296,7 @@ func OpponentActions(selectedAlias string) {
 			var selectedCase string
 			fmt.Scanf("%s\n", &selectedCase)
 			pos := board.GetPositionFromString(selectedCase)
-			//i, p := ip.GetIpOf("Noam", aliases)
-			oppenentIp := ip.GetIpOf2(selectedAlias, &aliases)
+			oppenentIp := ip.GetIpOf(selectedAlias)
 			resultHit := shots.RequestHit(oppenentIp, pos)
 			if resultHit == false {
 				ChooseOpponent()
@@ -162,6 +311,7 @@ func OpponentActions(selectedAlias string) {
 	}
 }
 
+// function that displays the menu
 func DisplayMenu() {
 	var choice int
 
@@ -171,6 +321,7 @@ func DisplayMenu() {
 
 		switch choice {
 		case 1:
+			ClearScreen()
 			//check the board state
 			boats := boats.GenerateRandomBoats()
 
@@ -182,24 +333,31 @@ func DisplayMenu() {
 
 		case 2:
 			//Attack or start the game
+			ClearScreen()
 			ChooseOpponent()
 		case 3:
+			ClearScreen()
 			ManageAliases()
 
 		case 4:
+			ClearScreen()
 			DisplayRules()
 
 		case 5:
+			ClearScreen()
 			//Statistics
 
 		case 6:
+			ClearScreen()
 			DisplayCredits()
 
 		case 7:
-			fmt.Println("Vous avez quitté le programme ! ")
+			ClearScreen()
+			fmt.Println("\nVous avez quitté le programme !\n")
 
 		default:
-			fmt.Println("Votre choix doit etre entre 1 et 7 !")
+			ClearScreen()
+			fmt.Println("\nVotre choix doit etre entre 1 et 7 !\n")
 		}
 	}
 }

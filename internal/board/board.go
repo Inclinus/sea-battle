@@ -61,7 +61,7 @@ Prints a board with shots & boats
 IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
 be printed correctly
 */
-func PrintBoard(boats [5]boats.Boat) {
+func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) {
 	fmt.Println("\n     A   B   C   D   E   F   G   H   I   J")
 
 	allShots := *shots.GetAllShots()
@@ -93,9 +93,11 @@ func PrintBoard(boats [5]boats.Boat) {
 				symbol := " "
 
 				// Check if there is a boat alive at this position
-				for _, boatPosition := range aliveBoatsPositions {
-					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
-						symbol = "■"
+				if !isEnemyBoard {
+					for _, boatPosition := range aliveBoatsPositions {
+						if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
+							symbol = "■"
+						}
 					}
 				}
 

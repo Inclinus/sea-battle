@@ -49,7 +49,7 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodPost:
 		var pos utils.Position
-
+		// Decode don't work in go routine WHY ?!
 		err := json.NewDecoder(request.Body).Decode(&pos)
 
 		if err != nil {
@@ -57,9 +57,16 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 
-		result := shots.AddShot(pos)
-
+		result := shots.IsShot(board.GetBoatsBoard(), pos)
 		resultConverted := strconv.FormatBool(result)
+
+		shots.AddShot(shots.Shot{Position: pos, Hit: result})
+
+		//fmt.Println("------------------")
+		//fmt.Println(result)
+		//fmt.Println("------------------")
+
+		// Return the result of the shot
 		printLnInNav(resultConverted, &writer)
 	default:
 		printLnInNav("Bad Request", &writer)
@@ -74,6 +81,7 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
 			fmt.Println("Il reste", aliveBoats, "bateaux en vie.")
+			printLnInNav("Il reste " + strconv.FormatUint(uint64(aliveBoats), 10) + " bateaux en vie.", &writer)
 
 		default:
 			printLnInNav("Bad Request", &writer)

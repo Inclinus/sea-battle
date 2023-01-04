@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
 	"sea-battle/internal/ip"
 	"sea-battle/internal/utils"
@@ -25,51 +24,16 @@ func GetAllShots() *[]Shot {
 
 var AllShots []Shot
 
-func AddShot(position utils.Position) bool {
-	isShot := checkShot(position)
-
-	actualShot := Shot{Position: position, Hit: isShot}
-
-	AllShots = append(AllShots, actualShot)
-
-	if isShot {
-		checkDestroyed(getBoatAt(position))
-	}
-
-	return actualShot.Hit
-}
-
-func getBoatAt(position utils.Position) *boats.Boat {
-	for _, boat := range board.GetBoatsBoard() {
-		for _, pos := range boat.Position {
-			if pos.X == position.X && pos.Y == position.Y {
-				return &boat
-			}
-		}
-	}
-	panic("POSITION DOES NOT CORRESPOND TO A BOAT")
-}
-
-func checkDestroyed(boat *boats.Boat) {
-	count := boat.Size
-	for _, pos := range boat.Position {
-		for _, shot := range AllShots {
-			if pos.X == shot.Position.X && pos.Y == shot.Position.Y {
-				count--
-			}
-		}
-	}
-	if count <= 0 {
-		boat.Destroyed = true
-	}
+func AddShot(shot Shot) {
+	AllShots = append(AllShots, shot)
 }
 
 // Function to check if a shot is a hit or not and return a boolean
-func checkShot(position utils.Position) bool {
+func IsShot(boats [5]boats.Boat, position utils.Position) bool {
 
 	// Concatenate all boats' positions
 	var allBoatsPositions []utils.Position
-	for _, boat := range board.GetBoatsBoard() {
+	for _, boat := range boats {
 		allBoatsPositions = append(allBoatsPositions, boat.Position...)
 	}
 
@@ -109,6 +73,7 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		return false
 	}
 	result := string(body)
+	//fmt.Println(bodyString)
 	if result == "true" {
 		fmt.Println("Touché !")
 	} else {

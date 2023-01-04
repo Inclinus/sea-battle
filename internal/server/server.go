@@ -81,7 +81,6 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
 			fmt.Println("Il reste", aliveBoats, "bateaux en vie.")
-			printLnInNav("Il reste " + strconv.FormatUint(uint64(aliveBoats), 10) + " bateaux en vie.", &writer)
 
 		default:
 			printLnInNav("Bad Request", &writer)

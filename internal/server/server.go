@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"sea-battle/internal/board"
 	"sea-battle/internal/shots"
 	"sea-battle/internal/utils"
 	"strconv"
@@ -48,7 +47,7 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodPost:
 		var pos utils.Position
-		// Decode don't work in go routine WHY ?!
+
 		err := json.NewDecoder(request.Body).Decode(&pos)
 
 		if err != nil {
@@ -56,16 +55,9 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 
-		result := shots.IsShot(board.GetBoatsBoard(), pos)
+		result := shots.AddShot(pos)
+
 		resultConverted := strconv.FormatBool(result)
-
-		shots.AddShot(shots.Shot{Position: pos, Hit: result})
-
-		//fmt.Println("------------------")
-		//fmt.Println(result)
-		//fmt.Println("------------------")
-
-		// Return the result of the shot
 		printLnInNav(resultConverted, &writer)
 	default:
 		printLnInNav("Bad Request", &writer)

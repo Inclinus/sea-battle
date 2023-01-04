@@ -145,4 +145,3 @@ func InitBoatsBoard(bBoard [5]boats.Boat) {
 func GetBoatsBoard() [5]boats.Boat {
 	return BoatsBoard
 }
-

@@ -43,6 +43,17 @@ import (
 
 var BoatsBoard [5]boats.Boat
 
+func GetBoatAt(position utils.Position) *boats.Boat {
+	for _, boat := range BoatsBoard {
+		for _, pos := range boat.Position {
+			if pos.X == position.X && pos.Y == position.Y {
+				return &boat
+			}
+		}
+	}
+	panic("POSITION DOES NOT CORRESPOND TO A BOAT")
+}
+
 /*
 		Prints an empty board for demonstration purposes (eg: tutorial)
 
@@ -121,7 +132,6 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) {
 						symbol = "#"
 					}
 				}
-
 
 				fmt.Printf(" %s |", symbol)
 			}

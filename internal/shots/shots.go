@@ -33,21 +33,10 @@ func AddShot(position utils.Position) bool {
 	AllShots = append(AllShots, actualShot)
 
 	if isShot {
-		checkDestroyed(getBoatAt(position))
+		checkDestroyed(board.GetBoatAt(position))
 	}
 
 	return actualShot.Hit
-}
-
-func getBoatAt(position utils.Position) *boats.Boat {
-	for _, boat := range board.GetBoatsBoard() {
-		for _, pos := range boat.Position {
-			if pos.X == position.X && pos.Y == position.Y {
-				return &boat
-			}
-		}
-	}
-	panic("POSITION DOES NOT CORRESPOND TO A BOAT")
 }
 
 func checkDestroyed(boat *boats.Boat) {

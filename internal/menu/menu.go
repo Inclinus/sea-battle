@@ -367,9 +367,11 @@ func OpponentActions(selectedAlias string) {
 }
 
 func InitMenu() {
+	initClearScreenVariables()
 	var boatsBoard [5]boats.Boat
 	// Create an array of allShots
 	for {
+		ClearScreen()
 		choice := "CHOICE"
 		for choice != "O" {
 			boatsBoard = boats.GenerateRandomBoats()
@@ -381,13 +383,13 @@ func InitMenu() {
 	}
 	board.InitBoatsBoard(boatsBoard)
 	go server.LaunchServer()
-	initClearScreenVariables()
+
 	displayMenu()
 }
 
 func displayMenu() {
 	var choice int
-
+	ClearScreen()
 	for choice != 7 {
 		DisplayChoices()
 		fmt.Scanf("%d\n", &choice)

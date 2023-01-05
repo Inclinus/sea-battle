@@ -34,15 +34,8 @@ func GetStats() *Stats {
 
 // Overwrite the stats.json file with given stats
 func SaveStats(stats Stats) {
-	// Open json file
-	content, err := os.ReadFile("stats.json")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(content)
-
 	// Marshal json file
-	content, err = json.Marshal(stats)
+	content, err := json.Marshal(stats)
 	if err != nil {
 		panic(err)
 	}

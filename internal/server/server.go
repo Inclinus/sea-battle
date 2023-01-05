@@ -81,6 +81,7 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
 			fmt.Println("Il reste", aliveBoats, "bateaux en vie.")
+			// TODO : Return the number of alive boats in writer
 
 		default:
 			printLnInNav("Bad Request", &writer)
@@ -90,13 +91,17 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 
 // Handle board request
 func boardHandler(writer http.ResponseWriter, request *http.Request) {
-	go func() {
-		switch request.Method {
-		case http.MethodGet:
-		default:
-			printLnInNav("Bad Request", &writer)
-		}
-	}()
+	//go func() {
+	switch request.Method {
+	case http.MethodGet:
+
+		result := board.PrintBoard2(board.GetBoatsBoard(), true)
+		printInNav(result, &writer)
+
+	default:
+		printLnInNav("Bad Request", &writer)
+	}
+	//}()
 }
 
 func LaunchServer() {

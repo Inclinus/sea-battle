@@ -1,8 +1,13 @@
 package board
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"net/http"
+	"sea-battle/internal/ip"
 	"strconv"
+	"time"
 
 	"sea-battle/internal/boats"
 	"sea-battle/internal/shots"
@@ -124,6 +129,99 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) {
 	}
 
 	fmt.Printf("   -----------------------------------------\n\n")
+}
+
+func PrintBoard2(boats [5]boats.Boat, isEnemyBoard bool) string {
+	var result bytes.Buffer
+	//result.WriteString("abc")
+	result.WriteString("\n     A   B   C   D   E   F   G   H   I   J \n")
+
+	allShots := *shots.GetAllShots()
+	// Get all alive & destroyed boats positions
+	var aliveBoatsPositions []utils.Position
+	var destroyedBoatsPositions []utils.Position
+	for _, boat := range boats {
+		if boat.Destroyed {
+			destroyedBoatsPositions = append(destroyedBoatsPositions, boat.Position...)
+		} else {
+			aliveBoatsPositions = append(aliveBoatsPositions, boat.Position...)
+		}
+	}
+
+	for i := 1; i <= 10; i++ {
+		result.WriteString("   ----------------------------------------- \n")
+		for j := 0; j <= 10; j++ {
+			if j == 0 {
+				//fmt.Printf("%02d |", i)
+				result.WriteString(fmt.Sprintf("%02d |", i))
+			} else {
+				/*
+					Symbols:
+					■ -> boat
+					O -> missed shot
+					X -> hit shot
+					# -> destroyed boat
+				*/
+
+				symbol := " "
+
+				if !isEnemyBoard {
+					// Check if there is a boat alive at this position
+					for _, boatPosition := range aliveBoatsPositions {
+						if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
+							symbol = "■"
+						}
+					}
+				}
+
+				// Check if there is a destroyed boat at this position
+				for _, boatPosition := range destroyedBoatsPositions {
+					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
+						symbol = "#"
+					}
+				}
+
+				// Check if there is a shot at this position
+				for _, shot := range allShots {
+					if shot.Hit && shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
+						symbol = "X"
+					} else if shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
+						symbol = "O"
+					}
+				}
+
+				//fmt.Printf(" %s |", symbol)
+				result.WriteString(fmt.Sprintf(" %s |", symbol))
+			}
+		}
+		//fmt.Println()
+		//result.WriteString(fmt.Sprintf())
+		result.WriteString("\n")
+	}
+
+	result.WriteString("   -----------------------------------------\n")
+	return result.String()
+}
+
+func RequestBoard(clientIP ip.IP) {
+	port := strconv.Itoa(int(clientIP.Port))
+	url := "http://" + clientIP.Ip + ":" + port + "/board"
+
+	client := http.Client{
+		Timeout: 2 * time.Second,
+	}
+	resp, err := client.Get(url)
+	if err != nil {
+		fmt.Println("Une erreur est2 survenue.B")
+		return
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Une erreur est1 survenue.A")
+		return
+	}
+	result := string(body)
+	fmt.Println(result)
 }
 
 // This function get a string in parameter (ex: "J6") and return a Position struct

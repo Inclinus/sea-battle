@@ -298,7 +298,7 @@ func OpponentActions(selectedAlias string) {
 		case 1:
 			ClearScreen()
 			//display the board of the opponent
-
+			board.RequestBoard(ip.GetIpOf(selectedAlias))
 		case 2:
 			ClearScreen()
 
@@ -371,6 +371,9 @@ func displayMenu() {
 			// Print board
 			ClearScreen()
 			board.PrintBoard(board.GetBoatsBoard(), false)
+			//DEBUG
+			//test := board.PrintBoard2(board.GetBoatsBoard(), false)
+			//fmt.Println(test)
 		case 2:
 			//Attack or start the game
 			ClearScreen()

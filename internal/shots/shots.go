@@ -73,8 +73,7 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		return false
 	}
 	result := string(body)
-	//fmt.Println(bodyString)
-	if result == "true" {
+	if result == "true\n" {
 		fmt.Println("Touché !")
 	} else {
 		fmt.Println("Raté !")

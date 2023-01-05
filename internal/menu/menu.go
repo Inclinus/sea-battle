@@ -271,7 +271,11 @@ func ChooseOpponent() {
 	}
 	ResultAliasIsExist := ip.AliasIsExist(selectedAlias)
 	if ResultAliasIsExist {
-		OpponentActions(selectedAlias)
+		if ip.IsConnected(ip.GetIpOf(selectedAlias)) {
+			OpponentActions(selectedAlias)
+		} else {
+			fmt.Println("L'adversaire n'est pas connecté !")
+		}
 	} else {
 		fmt.Println("L'alias n'existe pas !")
 		ChooseOpponent()

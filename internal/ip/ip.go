@@ -44,7 +44,7 @@ func AddAlias(ip string, username string) {
 	(Aliases)[username] = SplitIpAndPort(ip)
 }
 
-func isConnected(clientIP IP) bool {
+func IsConnected(clientIP IP) bool {
 	port := strconv.Itoa(int(clientIP.Port))
 	url := "http://" + clientIP.Ip + ":" + port + "/ping"
 
@@ -72,7 +72,7 @@ func DisplayAliases() {
 	fmt.Println("------------------------------")
 	fmt.Println("Liste des aliases :")
 	for key, value := range Aliases {
-		if isConnected(value) {
+		if IsConnected(value) {
 			fmt.Printf("%s (%s:%d) | ✔ Connecté \n", key, value.Ip, value.Port)
 		} else {
 			fmt.Printf("%s (%s:%d) | ❌ Hors-Ligne \n", key, value.Ip, value.Port)

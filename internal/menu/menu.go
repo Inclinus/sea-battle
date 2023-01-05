@@ -11,7 +11,6 @@ import (
 	"sea-battle/internal/boats"
 	"sea-battle/internal/ip"
 	"sea-battle/internal/server"
-	"sea-battle/internal/shots"
 	"strconv"
 	"time"
 )
@@ -332,7 +331,7 @@ func OpponentActions(selectedAlias string) {
 			fmt.Scanf("%s\n", &selectedCase)
 			pos := board.GetPositionFromString(selectedCase)
 			oppenentIp := ip.GetIpOf(selectedAlias)
-			resultHit := shots.RequestHit(oppenentIp, pos)
+			resultHit := board.RequestHit(oppenentIp, pos)
 			if resultHit == false {
 				ChooseOpponent()
 			}
@@ -378,7 +377,7 @@ func displayMenu() {
 		case 1:
 			// Print board
 			ClearScreen()
-			board.PrintBoard(board.GetBoatsBoard(), false)
+			board.PrintBoard(*board.GetBoatsBoard(), false)
 			//DEBUG
 			//test := board.PrintBoard2(board.GetBoatsBoard(), false)
 			//fmt.Println(test)

@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"sea-battle/internal/board"
 	"sea-battle/internal/boats"
-	"sea-battle/internal/shots"
 	"sea-battle/internal/utils"
 	"strconv"
 )
@@ -53,7 +52,7 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 
-		result := shots.AddShot(pos)
+		result := board.AddShot(pos)
 
 		resultConverted := strconv.FormatBool(result)
 		printLnInNav(resultConverted, &writer)
@@ -67,7 +66,7 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
 
-		aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
+		aliveBoats := boats.GetAliveBoats(*board.GetBoatsBoard())
 
 		test := strconv.Itoa(int(aliveBoats))
 		printInNav("Il reste "+test+" bateaux en vie", &writer)
@@ -82,7 +81,7 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
 
-		result := board.PrintBoard2(board.GetBoatsBoard(), true)
+		result := board.PrintBoard2(*board.GetBoatsBoard(), true)
 		printInNav(result, &writer)
 
 	default:

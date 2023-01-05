@@ -101,13 +101,6 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) {
 					}
 				}
 
-				// Check if there is a destroyed boat at this position
-				for _, boatPosition := range destroyedBoatsPositions {
-					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
-						symbol = "#"
-					}
-				}
-
 				// Check if there is a shot at this position
 				for _, shot := range allShots {
 					if shot.Hit && shot.Position.X == uint8(j) && shot.Position.Y == uint8(i) {
@@ -116,6 +109,14 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) {
 						symbol = "O"
 					}
 				}
+
+				// Check if there is a destroyed boat at this position
+				for _, boatPosition := range destroyedBoatsPositions {
+					if boatPosition.X == uint8(j) && boatPosition.Y == uint8(i) {
+						symbol = "#"
+					}
+				}
+
 
 				fmt.Printf(" %s |", symbol)
 			}

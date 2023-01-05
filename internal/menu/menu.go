@@ -362,7 +362,7 @@ func InitMenu() {
 	}
 	board.InitBoatsBoard(boatsBoard)
 	go server.LaunchServer()
-	initClearScreenVariables()
+	//initClearScreenVariables()
 	displayMenu()
 }
 

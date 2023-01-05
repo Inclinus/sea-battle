@@ -81,7 +81,7 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
 
-		result := board.PrintBoard2(*board.GetBoatsBoard(), true)
+		result := board.PrintBoard2(board.GetBoatsBoard(), true)
 		printInNav(result, &writer)
 
 	default:

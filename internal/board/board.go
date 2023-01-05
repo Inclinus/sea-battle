@@ -55,10 +55,14 @@ func GetAllShots() *[]Shot {
 var AllShots []Shot
 
 func GetBoatAt(position utils.Position) *boats.Boat {
-	for _, boat := range BoatsBoard {
+	fmt.Println(*GetBoatsBoard())
+	fmt.Println(BoatsBoard)
+	for index, boat := range *GetBoatsBoard() {
 		for _, pos := range boat.Position {
 			if pos.X == position.X && pos.Y == position.Y {
-				return &boat
+				fmt.Println("RETURN BOAT IN GETBOATAT : ")
+				fmt.Println(&boat)
+				return &(*GetBoatsBoard())[index]
 			}
 		}
 	}
@@ -152,7 +156,7 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) {
 	fmt.Printf("   -----------------------------------------\n\n")
 }
 
-func PrintBoard2(boats [5]boats.Boat, isEnemyBoard bool) string {
+func PrintBoard2(boats *[5]boats.Boat, isEnemyBoard bool) string {
 	var result bytes.Buffer
 	//result.WriteString("abc")
 	result.WriteString("\n     A   B   C   D   E   F   G   H   I   J \n")
@@ -272,6 +276,7 @@ func AddShot(position utils.Position) bool {
 	AllShots = append(AllShots, actualShot)
 
 	if isShot {
+
 		checkDestroyed(GetBoatAt(position))
 	}
 
@@ -279,15 +284,21 @@ func AddShot(position utils.Position) bool {
 }
 
 func checkDestroyed(boat *boats.Boat) {
+	fmt.Println("BOAT ADRESS GET : ")
+	fmt.Println(&boat)
+	fmt.Println(boat.Size)
 	count := boat.Size
 	for _, pos := range boat.Position {
 		for _, shot := range AllShots {
 			if pos.X == shot.Position.X && pos.Y == shot.Position.Y {
 				count--
+				fmt.Println("HIT : count = " + strconv.Itoa(int(count)))
 			}
 		}
 	}
 	if count <= 0 {
+		fmt.Println("BOAT DESTROYED")
+		fmt.Println(*GetBoatsBoard())
 		boat.Destroyed = true
 	}
 }

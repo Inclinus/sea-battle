@@ -303,7 +303,7 @@ func OpponentActions(selectedAlias string) {
 			ClearScreen()
 
 			enemyIp := ip.GetIpOf(selectedAlias)
-			res, err := http.Get("http://" + enemyIp.Ip + strconv.FormatUint(uint64(enemyIp.Port), 10) + "/boats")
+			res, err := http.Get("http://" + enemyIp.Ip + ":" + strconv.FormatUint(uint64(enemyIp.Port), 10) + "/boats")
 			if err != nil {
 				panic(err)
 			}

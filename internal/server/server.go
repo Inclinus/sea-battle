@@ -80,8 +80,12 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 		case http.MethodGet:
 			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
-			fmt.Println("Il reste", aliveBoats, "bateaux en vie.")
-			// TODO : Return the number of alive boats in writer
+			str := "Il reste" + strconv.Itoa(int(aliveBoats)) + "bateaux en vie"
+			_, err := fmt.Fprintf(writer, str)
+			if err != nil {
+				fmt.Println("Une erreur est survenue.")
+				return
+			}
 
 		default:
 			printLnInNav("Bad Request", &writer)

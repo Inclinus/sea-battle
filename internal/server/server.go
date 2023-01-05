@@ -31,8 +31,6 @@ func printInNav(msg string, w *http.ResponseWriter) {
 
 // Handle board request
 func pingHandler(writer http.ResponseWriter, request *http.Request) {
-	//go func() {
-	// GO ROUTINE REMOVED
 	// SAME PROBLEM AS HIT HANDLER
 	switch request.Method {
 	case http.MethodGet:
@@ -40,12 +38,10 @@ func pingHandler(writer http.ResponseWriter, request *http.Request) {
 	default:
 		printLnInNav("Bad Request", &writer)
 	}
-	//}()
 }
 
 // Handle the hit request
 func hitHandler(writer http.ResponseWriter, request *http.Request) {
-	// GO ROUTINE REMOVED
 	switch request.Method {
 	case http.MethodPost:
 		var pos utils.Position
@@ -75,26 +71,21 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 
 // Handle boats request
 func boatsHandler(writer http.ResponseWriter, request *http.Request) {
-	go func() {
-		switch request.Method {
-		case http.MethodGet:
+	switch request.Method {
+	case http.MethodGet:
 
-			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
+		aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
-			test := strconv.Itoa(int(aliveBoats))
-			fmt.Println(test)
-			str := "Il reste" + test + "bateaux en vie"
-			printInNav(str, &writer)
+		test := strconv.Itoa(int(aliveBoats))
+		printInNav("Il reste "+test+" bateaux en vie", &writer)
 
-		default:
-			printInNav("Bad Request", &writer)
-		}
-	}()
+	default:
+		printInNav("Bad Request", &writer)
+	}
 }
 
 // Handle board request
 func boardHandler(writer http.ResponseWriter, request *http.Request) {
-	//go func() {
 	switch request.Method {
 	case http.MethodGet:
 
@@ -104,7 +95,6 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 	default:
 		printInNav("Bad Request", &writer)
 	}
-	//}()
 }
 
 func LaunchServer() {

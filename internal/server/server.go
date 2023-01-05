@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"sea-battle/internal/board"
+	"sea-battle/internal/stats"
 	"sea-battle/internal/utils"
 	"strconv"
 )
@@ -55,6 +56,20 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 
 		resultConverted := strconv.FormatBool(result)
 		printLnInNav(resultConverted, &writer)
+
+		// Check if all boats are destroyed
+		if board.GetAliveBoats() == 0 {
+			// Update stats
+			stats.AddGameLost()
+
+			// If all boats are destroyed, print a message and ask to restart a game
+			fmt.Print("\nTous vos bateaux ont été coulés ! Vous avez perdu !\n")
+			fmt.Println("Appuyez sur Entrée pour quitter...")
+			fmt.Scanln()
+
+			os.Exit(3)
+		}
+
 	default:
 		printLnInNav("Bad Request", &writer)
 	}
@@ -64,11 +79,7 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
-
-		aliveBoats := board.GetAliveBoats()
-
-		test := strconv.Itoa(int(aliveBoats))
-		printInNav("Il reste "+test+" bateaux en vie", &writer)
+		printInNav(strconv.Itoa(int(board.GetAliveBoats())), &writer)
 
 	default:
 		printInNav("Bad Request", &writer)

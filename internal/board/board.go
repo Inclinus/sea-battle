@@ -308,12 +308,43 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		return false
 	}
 	result := string(body)
+
 	if result == "true\n" {
-		fmt.Println("\nTouché ! ☺️ \n")
+		fmt.Print("\nTouché ! ☺️ \n")
 		stats.AddShotHit()
+
+		// Check if target boat is destroyed
+		if GetBoatAt(pos).Destroyed {
+			stats.AddBoatDestroyed()
+		}
+
+		// Request opponents's alive boats
+		request, err := client.Get("http://" + clientIP.Ip + ":" + port + "/boats")
+		if err != nil {
+			panic(err)
+		}
+		defer request.Body.Close()
+
+		body, err := io.ReadAll(request.Body)
+		if err != nil {
+			panic(err)
+		}
+
+		// Convert body to uint8
+		aliveBoats := uint8(body[0])
+
+		// Check if all boats are destroyed
+		if aliveBoats == 0 {
+			// Notify player that he won
+			fmt.Print("\nBravo, vous avez gagné ! 🎉\n")
+			fmt.Print("Appuyez sur Entrée pour continuer...")
+			fmt.Scanln()
+			stats.AddGameWon()
+		}
 	} else {
-		fmt.Println("\nRaté ! ☹️ \n")
+		fmt.Print("\nRaté ! ☹️ \n")
 		stats.AddShotMissed()
 	}
+
 	return true
 }

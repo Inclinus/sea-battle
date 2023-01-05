@@ -81,11 +81,7 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
 			str := "Il reste" + strconv.Itoa(int(aliveBoats)) + "bateaux en vie"
-			_, err := fmt.Fprintf(writer, str)
-			if err != nil {
-				fmt.Println("Une erreur est survenue.")
-				return
-			}
+			printLnInNav(str, &writer)
 
 		default:
 			printLnInNav("Bad Request", &writer)

@@ -79,4 +79,6 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		fmt.Println("Raté !")
 	}
 	return true
+
+	menu.ClearScreen()
 }

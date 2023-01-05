@@ -11,6 +11,7 @@ import (
 	"sea-battle/internal/boats"
 	"sea-battle/internal/ip"
 	"sea-battle/internal/server"
+	"sea-battle/internal/stats"
 	"strconv"
 	"time"
 )
@@ -259,6 +260,20 @@ func DisplayRules() {
 		"- Ce n’est pas un jeu au tour par tour.\n")
 }
 
+func DisplayStats() {
+	fmt.Printf("Statistiques\n\n")
+	stat := stats.GetStats()
+	fmt.Println("Parties jouées  :", stat.GamesWon + stat.GamesLost)
+	fmt.Println("Parties gagnées :", stat.GamesWon)
+	fmt.Println("Parties perdues :", stat.GamesLost)
+	fmt.Println("Tir effectués   :", stat.ShotsHit + stat.ShotsMissed)
+	fmt.Println("Tir réussis     :", stat.ShotsHit)
+	fmt.Println("Tir ratés       :", stat.ShotsMissed)
+	fmt.Printf("Bateaux coulés  : %d\n\n", stat.BoatsDestroyed)
+	fmt.Print("Appuyez sur Entrée pour revenir au menu principal...")
+	fmt.Scanln()
+}
+
 func ChooseOpponent() {
 	ip.DisplayAliases()
 	fmt.Println("Veillez entrer l'alias de l'adversaire ou 'exit' pour quitter : ")
@@ -397,8 +412,7 @@ func displayMenu() {
 			DisplayRules()
 		case 5:
 			ClearScreen()
-			//Statistics
-			// TODO anto & thibaut
+			DisplayStats()
 		case 6:
 			ClearScreen()
 			DisplayCredits()

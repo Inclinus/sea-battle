@@ -2,3 +2,4 @@
 *.xml
 .idea/.gitignore
 *.iml
+stats.json

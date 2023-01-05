@@ -2,7 +2,7 @@ package menu
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -302,24 +302,27 @@ func OpponentActions(selectedAlias string) {
 			board.RequestBoard(ip.GetIpOf(selectedAlias))
 		case 2:
 			ClearScreen()
-
 			enemyIp := ip.GetIpOf(selectedAlias)
+
+			port := strconv.Itoa(int(enemyIp.Port))
+			url := "http://" + enemyIp.Ip + ":" + port + "/boats"
 
 			client := http.Client{
 				Timeout: 2 * time.Second,
 			}
-			resp, err := client.Get("http://" + enemyIp.Ip + ":" + strconv.FormatUint(uint64(enemyIp.Port), 10) + "/boats")
-			if err != nil {
-				panic(err)
-			}
 
-			// Read the response body
-			body, err := ioutil.ReadAll(resp.Body)
+			resp, err := client.Get(url)
 			if err != nil {
-				panic(err)
+				fmt.Println("Une erreur est survenue.")
+				return
 			}
-
-			fmt.Println(string(body))
+			body, err := io.ReadAll(resp.Body)
+			if err != nil {
+				fmt.Println("Une erreur est survenue.")
+				return
+			}
+			result := string(body)
+			fmt.Println(result)
 
 		case 3:
 			ClearScreen()

@@ -250,7 +250,7 @@ func GetPositionFromString(inputPos string) utils.Position {
 	YtoInt, _ := strconv.Atoi(inputPos[1:3])
 	pos.Y = uint8(YtoInt)
 
-	mapOfCord := map[string]byte{"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10}
+	mapOfCord := map[string]byte{"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10, "a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8, "i": 9, "j": 10}
 	pos.X = mapOfCord[inputPos[:1]]
 
 	return pos

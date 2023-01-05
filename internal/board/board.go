@@ -212,12 +212,12 @@ func RequestBoard(clientIP ip.IP) {
 	}
 	resp, err := client.Get(url)
 	if err != nil {
-		fmt.Println("Une erreur est2 survenue.B")
+		fmt.Println("Une erreur est survenue.")
 		return
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Une erreur est1 survenue.A")
+		fmt.Println("Une erreur est survenue.")
 		return
 	}
 	result := string(body)

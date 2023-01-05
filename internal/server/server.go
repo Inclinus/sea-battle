@@ -15,7 +15,7 @@ import (
 func printLnInNav(msg string, w *http.ResponseWriter) {
 	_, err := fmt.Fprintln(*w, msg)
 	if err != nil {
-		fmt.Println("Une erreur est survenue.")
+		fmt.Println("Une erreur est survenue. : " + err.Error())
 		return
 	}
 }
@@ -24,7 +24,7 @@ func printLnInNav(msg string, w *http.ResponseWriter) {
 func printInNav(msg string, w *http.ResponseWriter) {
 	_, err := fmt.Fprint(*w, msg)
 	if err != nil {
-		fmt.Println("Une erreur est survenue.")
+		fmt.Println("Une erreur est survenue : " + err.Error())
 		return
 	}
 }
@@ -78,13 +78,16 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 	go func() {
 		switch request.Method {
 		case http.MethodGet:
+
 			aliveBoats := boats.GetAliveBoats(board.GetBoatsBoard())
 
-			str := "Il reste" + strconv.Itoa(int(aliveBoats)) + "bateaux en vie"
-			printLnInNav(str, &writer)
+			test := strconv.Itoa(int(aliveBoats))
+			fmt.Println(test)
+			str := "Il reste" + test + "bateaux en vie"
+			printInNav(str, &writer)
 
 		default:
-			printLnInNav("Bad Request", &writer)
+			printInNav("Bad Request", &writer)
 		}
 	}()
 }
@@ -99,7 +102,7 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 		printInNav(result, &writer)
 
 	default:
-		printLnInNav("Bad Request", &writer)
+		printInNav("Bad Request", &writer)
 	}
 	//}()
 }

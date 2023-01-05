@@ -338,9 +338,9 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 	}
 	result := string(body)
 	if result == "true\n" {
-		fmt.Println("Touché !")
+		fmt.Println("\nTouché ! ☺️ \n")
 	} else {
-		fmt.Println("Raté !")
+		fmt.Println("\nRaté ! ☹️ \n")
 	}
 	return true
 }

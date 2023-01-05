@@ -313,9 +313,6 @@ func OpponentActions(selectedAlias string) {
 				panic(err)
 			}
 
-			// Prevent resource leak
-			defer resp.Body.Close()
-
 			// Read the response body
 			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {

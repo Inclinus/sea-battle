@@ -261,9 +261,14 @@ func DisplayRules() {
 
 func ChooseOpponent() {
 	ip.DisplayAliases()
-	fmt.Println("Veillez entrer l'alias de l'adversaire : ")
+	fmt.Println("Veillez entrer l'alias de l'adversaire ou 'exit' pour quitter : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)
+	if selectedAlias == "exit" {
+		ClearScreen()
+		fmt.Println("\nRetour au Menu Principal!\n")
+		return
+	}
 	ResultAliasIsExist := ip.AliasIsExist(selectedAlias)
 	if ResultAliasIsExist {
 		OpponentActions(selectedAlias)

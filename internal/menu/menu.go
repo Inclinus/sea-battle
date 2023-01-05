@@ -328,15 +328,16 @@ func OpponentActions(selectedAlias string) {
 			pos := board.GetPositionFromString(selectedCase)
 			oppenentIp := ip.GetIpOf(selectedAlias)
 			resultHit := shots.RequestHit(oppenentIp, pos)
-			ClearScreen()
 			if resultHit == false {
 				ChooseOpponent()
 			}
 		case 4:
+			ClearScreen()
 			fmt.Println("Retour au Menu Principal!")
 			fmt.Println("------------------------------")
 
 		default:
+			ClearScreen()
 			fmt.Println("Votre choix doit etre entre 1 et 5 !")
 		}
 	}
@@ -357,6 +358,8 @@ func InitMenu() {
 	}
 	board.InitBoatsBoard(boatsBoard)
 	go server.LaunchServer()
+	// TODO : UNCOMMENT THE LINE BELOW
+	// initClearScreenVariables()
 	displayMenu()
 }
 

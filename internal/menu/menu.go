@@ -328,6 +328,7 @@ func OpponentActions(selectedAlias string) {
 			pos := board.GetPositionFromString(selectedCase)
 			oppenentIp := ip.GetIpOf(selectedAlias)
 			resultHit := shots.RequestHit(oppenentIp, pos)
+			ClearScreen()
 			if resultHit == false {
 				ChooseOpponent()
 			}

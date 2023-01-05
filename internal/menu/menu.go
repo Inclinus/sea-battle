@@ -330,6 +330,10 @@ func OpponentActions(selectedAlias string) {
 			var selectedCase string
 			fmt.Scanf("%s\n", &selectedCase)
 			pos := board.GetPositionFromString(selectedCase)
+			if pos.X == 0 || pos.Y == 0 || pos.Y > 10 {
+				fmt.Println("La case entrée n'est pas valide !")
+				OpponentActions(selectedAlias)
+			}
 			oppenentIp := ip.GetIpOf(selectedAlias)
 			resultHit := board.RequestHit(oppenentIp, pos)
 			if resultHit == false {

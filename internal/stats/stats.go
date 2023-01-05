@@ -16,6 +16,18 @@ type Stats struct {
 
 // Get the stats from the stats.json file
 func GetStats() *Stats {
+	// Check if stats.json exists
+	_, err := os.Stat("stats.json")
+	if err != nil {
+		if os.IsNotExist(err) {
+			// Notify that their is no saved stats & return empty stats
+			fmt.Println("Auncune statistique n'a été trouvée.")
+			return &Stats{}
+		} else {
+			panic(err)
+		}
+	}
+
 	// Open json file
 	content, err := os.ReadFile("stats.json")
 	if err != nil {
@@ -34,6 +46,20 @@ func GetStats() *Stats {
 
 // Overwrite the stats.json file with given stats
 func SaveStats(stats Stats) {
+	// Check if stats.json exists
+	_, err := os.Stat("stats.json")
+	if err != nil {
+		if os.IsNotExist(err) {
+			// Create stats.json if it doesn't exist
+			_, err = os.Create("stats.json")
+			if err != nil {
+				panic(err)
+			}
+		} else {
+			panic(err)
+		}
+	}
+
 	// Marshal json file
 	content, err := json.Marshal(stats)
 	if err != nil {

@@ -13,6 +13,7 @@ import (
 	"sea-battle/internal/server"
 	"sea-battle/internal/shots"
 	"strconv"
+	"time"
 )
 
 var clearScreen map[string]func()
@@ -303,16 +304,20 @@ func OpponentActions(selectedAlias string) {
 			ClearScreen()
 
 			enemyIp := ip.GetIpOf(selectedAlias)
-			res, err := http.Get("http://" + enemyIp.Ip + ":" + strconv.FormatUint(uint64(enemyIp.Port), 10) + "/boats")
+
+			client := http.Client{
+				Timeout: 2 * time.Second,
+			}
+			resp, err := client.Get("http://" + enemyIp.Ip + ":" + strconv.FormatUint(uint64(enemyIp.Port), 10) + "/boats")
 			if err != nil {
 				panic(err)
 			}
 
 			// Prevent resource leak
-			defer res.Body.Close()
+			defer resp.Body.Close()
 
 			// Read the response body
-			body, err := ioutil.ReadAll(res.Body)
+			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
 				panic(err)
 			}

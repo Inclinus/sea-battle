@@ -14,18 +14,6 @@ type Stats struct {
 	BoatsDestroyed uint
 }
 
-func AddShotHit() {
-	stats := GetStats()
-	stats.ShotsHit++
-	SaveStats(*stats)
-}
-
-func AddShotMissed() {
-	stats := GetStats()
-	stats.ShotsMissed++
-	SaveStats(*stats)
-}
-
 // Get the stats from the stats.json file
 func GetStats() *Stats {
 	// Check if stats.json exists
@@ -84,4 +72,34 @@ func SaveStats(stats Stats) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func AddShotHit() {
+	stats := GetStats()
+	stats.ShotsHit++
+	SaveStats(*stats)
+}
+
+func AddShotMissed() {
+	stats := GetStats()
+	stats.ShotsMissed++
+	SaveStats(*stats)
+}
+
+func AddGameWon() {
+	stats := GetStats()
+	stats.GamesWon++
+	SaveStats(*stats)
+}
+
+func AddGameLost() {
+	stats := GetStats()
+	stats.GamesLost++
+	SaveStats(*stats)
+}
+
+func AddBoatDestroyed() {
+	stats := GetStats()
+	stats.BoatsDestroyed++
+	SaveStats(*stats)
 }

@@ -363,8 +363,7 @@ func InitMenu() {
 	}
 	board.InitBoatsBoard(boatsBoard)
 	go server.LaunchServer()
-	// TODO : UNCOMMENT THE LINE BELOW
-	// initClearScreenVariables()
+	initClearScreenVariables()
 	displayMenu()
 }
 

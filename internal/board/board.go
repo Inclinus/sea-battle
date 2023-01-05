@@ -49,21 +49,15 @@ type Shot struct {
 
 var BoatsBoard [5]boats.Boat
 
-func GetAllShots() *[]Shot {
-	return &AllShots
-}
+var BoatsDestroyedMap map[int]bool
 
 var AllShots []Shot
 
-func GetBoatAt(position utils.Position) *boats.Boat {
-	fmt.Println(*GetBoatsBoard())
-	fmt.Println(BoatsBoard)
-	for index, boat := range *GetBoatsBoard() {
+func GetBoatAt(position utils.Position) boats.Boat {
+	for _, boat := range BoatsBoard {
 		for _, pos := range boat.Position {
 			if pos.X == position.X && pos.Y == position.Y {
-				fmt.Println("RETURN BOAT IN GETBOATAT : ")
-				fmt.Println(&boat)
-				return &(*GetBoatsBoard())[index]
+				return boat
 			}
 		}
 	}
@@ -105,7 +99,7 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) string {
 	var aliveBoatsPositions []utils.Position
 	var destroyedBoatsPositions []utils.Position
 	for _, boat := range boats {
-		if boat.Destroyed {
+		if BoatsDestroyedMap[boat.Id] {
 			destroyedBoatsPositions = append(destroyedBoatsPositions, boat.Position...)
 		} else {
 			aliveBoatsPositions = append(aliveBoatsPositions, boat.Position...)
@@ -216,12 +210,29 @@ func GetPositionFromString(inputPos string) utils.Position {
 	return pos
 }
 
-func InitBoatsBoard(bBoard [5]boats.Boat) {
-	BoatsBoard = bBoard
+// Returns the number of alive boats
+func GetAliveBoats() uint8 {
+	var aliveBoats uint8
+
+	for _, boat := range BoatsBoard {
+		if !BoatsDestroyedMap[boat.Id] {
+			aliveBoats++
+		}
+	}
+
+	return aliveBoats
 }
 
-func GetBoatsBoard() *[5]boats.Boat {
-	return &BoatsBoard
+func InitBoatsBoard(bBoard [5]boats.Boat) {
+	BoatsBoard = bBoard
+	BoatsDestroyedMap = make(map[int]bool)
+	for _, boat := range BoatsBoard {
+		BoatsDestroyedMap[boat.Id] = false
+	}
+}
+
+func GetBoatsBoard() [5]boats.Boat {
+	return BoatsBoard
 }
 
 func AddShot(position utils.Position) bool {
@@ -232,30 +243,23 @@ func AddShot(position utils.Position) bool {
 	AllShots = append(AllShots, actualShot)
 
 	if isShot {
-
 		checkDestroyed(GetBoatAt(position))
 	}
 
 	return actualShot.Hit
 }
 
-func checkDestroyed(boat *boats.Boat) {
-	fmt.Println("BOAT ADRESS GET : ")
-	fmt.Println(&boat)
-	fmt.Println(boat.Size)
+func checkDestroyed(boat boats.Boat) {
 	count := boat.Size
 	for _, pos := range boat.Position {
 		for _, shot := range AllShots {
 			if pos.X == shot.Position.X && pos.Y == shot.Position.Y {
 				count--
-				fmt.Println("HIT : count = " + strconv.Itoa(int(count)))
 			}
 		}
 	}
 	if count <= 0 {
-		fmt.Println("BOAT DESTROYED")
-		fmt.Println(*GetBoatsBoard())
-		boat.Destroyed = true
+		BoatsDestroyedMap[boat.Id] = true
 	}
 }
 

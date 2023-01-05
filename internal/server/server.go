@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"sea-battle/internal/board"
-	"sea-battle/internal/boats"
 	"sea-battle/internal/utils"
 	"strconv"
 )
@@ -66,7 +65,7 @@ func boatsHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
 
-		aliveBoats := boats.GetAliveBoats(*board.GetBoatsBoard())
+		aliveBoats := board.GetAliveBoats()
 
 		test := strconv.Itoa(int(aliveBoats))
 		printInNav("Il reste "+test+" bateaux en vie", &writer)
@@ -81,7 +80,7 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
 
-		result := board.PrintBoard(*board.GetBoatsBoard(), true)
+		result := board.PrintBoard(board.GetBoatsBoard(), true)
 		printInNav(result, &writer)
 
 	default:

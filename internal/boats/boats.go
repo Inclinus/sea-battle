@@ -19,24 +19,13 @@ Since we can't distinguish the stern & the prow of a boat, the position is
 simply one of the extremity of the boat.
 */
 type Boat struct {
+	Id        int
 	Position  []utils.Position
 	Direction string
 	Size      uint8
-	Destroyed bool
 }
 
-// Returns the number of alive boats
-func GetAliveBoats(boats [5]Boat) uint8 {
-	var aliveBoats uint8
-
-	for _, boat := range boats {
-		if !boat.Destroyed {
-			aliveBoats++
-		}
-	}
-
-	return aliveBoats
-}
+var IncrementId int
 
 /*
  * Returns true if the boat is overlapping another one, false otherwise.
@@ -78,6 +67,8 @@ of boats of same size doesn't exceed the limit, which is:
   - 2 boats of size 3.
 */
 func GenerateRandomBoats() (boats [5]Boat) {
+	IncrementId = 0
+
 	// Seed for randomness
 	rand.Seed(time.Now().UnixMicro())
 
@@ -157,8 +148,9 @@ func GenerateRandomBoats() (boats [5]Boat) {
 			}
 
 			// Create boat
-			boat := Boat{position, direction, size, false}
+			boat := Boat{IncrementId, position, direction, size}
 
+			IncrementId++
 			// Check if boat is out of the board && if it's overlapping another one
 			// If it's not, push it to the array & break the loop
 			if !isBoatOverlapping(boat, boats) && !isBoatOutOfBoard(boat) {

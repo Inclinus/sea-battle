@@ -263,10 +263,10 @@ func DisplayRules() {
 func DisplayStats() {
 	fmt.Printf("Statistiques\n\n")
 	stat := stats.GetStats()
-	fmt.Println("Parties jouées  :", stat.GamesWon + stat.GamesLost)
+	fmt.Println("Parties jouées  :", stat.GamesWon+stat.GamesLost)
 	fmt.Println("Parties gagnées :", stat.GamesWon)
 	fmt.Println("Parties perdues :", stat.GamesLost)
-	fmt.Println("Tir effectués   :", stat.ShotsHit + stat.ShotsMissed)
+	fmt.Println("Tir effectués   :", stat.ShotsHit+stat.ShotsMissed)
 	fmt.Println("Tir réussis     :", stat.ShotsHit)
 	fmt.Println("Tir ratés       :", stat.ShotsMissed)
 	fmt.Printf("Bateaux coulés  : %d\n\n", stat.BoatsDestroyed)
@@ -396,7 +396,7 @@ func displayMenu() {
 		case 1:
 			// Print board
 			ClearScreen()
-			board.PrintBoard(*board.GetBoatsBoard(), false)
+			board.PrintBoard(board.GetBoatsBoard(), false)
 			//DEBUG
 			//test := board.PrintBoard2(board.GetBoatsBoard(), false)
 			//fmt.Println(test)

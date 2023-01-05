@@ -1,17 +1,29 @@
 package stats
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
 type Stats struct {
-	GamesWon uint
-	GamesLost uint
-	ShotsHit uint
-	ShotsMissed uint
+	GamesWon       uint
+	GamesLost      uint
+	ShotsHit       uint
+	ShotsMissed    uint
 	BoatsDestroyed uint
+}
+
+func AddShotHit() {
+	stats := GetStats()
+	stats.ShotsHit++
+	SaveStats(*stats)
+}
+
+func AddShotMissed() {
+	stats := GetStats()
+	stats.ShotsMissed++
+	SaveStats(*stats)
 }
 
 // Get the stats from the stats.json file
@@ -72,4 +84,4 @@ func SaveStats(stats Stats) {
 	if err != nil {
 		panic(err)
 	}
-}	
+}

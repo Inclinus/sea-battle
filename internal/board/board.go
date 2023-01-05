@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"sea-battle/internal/ip"
+	"sea-battle/internal/stats"
 	"strconv"
 	"time"
 
@@ -339,8 +340,10 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 	result := string(body)
 	if result == "true\n" {
 		fmt.Println("\nTouché ! ☺️ \n")
+		stats.AddShotHit()
 	} else {
 		fmt.Println("\nRaté ! ☹️ \n")
+		stats.AddShotMissed()
 	}
 	return true
 }

@@ -241,6 +241,6 @@ func InitBoatsBoard(bBoard [5]boats.Boat) {
 	BoatsBoard = bBoard
 }
 
-func GetBoatsBoard() [5]boats.Boat {
-	return BoatsBoard
+func GetBoatsBoard() *[5]boats.Boat {
+	return &BoatsBoard
 }

@@ -2,7 +2,6 @@ package stats
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -20,7 +19,6 @@ func GetStats() *Stats {
 	if err != nil {
 		if os.IsNotExist(err) {
 			// Notify that their is no saved stats & return empty stats
-			fmt.Println("Auncune statistique n'a été trouvée.")
 			return &Stats{}
 		} else {
 			panic(err)

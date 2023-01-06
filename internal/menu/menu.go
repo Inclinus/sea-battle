@@ -276,7 +276,7 @@ func DisplayStats() {
 
 func ChooseOpponent() {
 	ip.DisplayAliases()
-	fmt.Println("Veillez entrer l'alias de l'adversaire ou 'exit' pour quitter : ")
+	fmt.Println("Veuillez entrer l'alias de l'adversaire ou 'exit' pour quitter : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)
 	if selectedAlias == "exit" {

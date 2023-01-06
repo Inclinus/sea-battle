@@ -64,7 +64,6 @@ func SaveStats(stats Stats) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(content)
 
 	// Write json file
 	err = os.WriteFile("stats.json", content, 0644)

@@ -18,6 +18,8 @@ import (
 
 var clearScreen map[string]func()
 
+var ChallengeSentence string
+
 // this function initializes the clearScreen variable for MacOS, linux and windows
 func initClearScreenVariables() {
 	clearScreen = make(map[string]func())
@@ -354,11 +356,11 @@ func OpponentActions(selectedAlias string) {
 			if resultHit == false {
 				ChooseOpponent()
 			}
+			ch = 4
 		case 4:
 			ClearScreen()
 			fmt.Println("Retour au Menu Principal!")
 			fmt.Println("------------------------------")
-
 		default:
 			ClearScreen()
 			fmt.Println("Votre choix doit etre entre 1 et 5 !")
@@ -370,21 +372,33 @@ func InitMenu() {
 	initClearScreenVariables()
 	var boatsBoard [5]boats.Boat
 	// Create an array of allShots
-	for {
-		ClearScreen()
-		choice := "CHOICE"
-		for choice != "O" {
-			boatsBoard = boats.GenerateRandomBoats()
-			board.PrintBoard(boatsBoard, false)
-			fmt.Println("Voici votre board, est-ce qu'il vous satisfait ? (O/N)")
-			fmt.Scanf("%s\n", &choice)
-		}
-		break
+
+	ClearScreen()
+	choice := "CHOICE"
+	for choice != "O" {
+		boatsBoard = boats.GenerateRandomBoats()
+		board.PrintBoard(boatsBoard, false, ChallengeSentence)
+		fmt.Println("Voici votre board, est-ce qu'il vous satisfait ? (O/N)")
+		fmt.Scanf("%s\n", &choice)
 	}
+	ChallengeSentence = " "
+	satisfied := "N"
+	for satisfied != "O" {
+		fmt.Println("Veuillez choisir une phrase pour défier vos adversaires !")
+		fmt.Scanf("%s\n", &ChallengeSentence)
+		fmt.Println("Voici votre phrase :\n" + ChallengeSentence)
+		fmt.Println("Voulez-vous utiliser cette phrase de défi ? (O/N)")
+		fmt.Scanf("%s\n", &satisfied)
+	}
+
 	board.InitBoatsBoard(boatsBoard)
-	go server.LaunchServer()
+	go server.LaunchServer(ChallengeSentence)
 
 	displayMenu()
+}
+
+func GetChallengeSentence() string {
+	return ChallengeSentence
 }
 
 func displayMenu() {
@@ -398,7 +412,7 @@ func displayMenu() {
 		case 1:
 			// Print board
 			ClearScreen()
-			board.PrintBoard(board.GetBoatsBoard(), false)
+			board.PrintBoard(board.GetBoatsBoard(), false, ChallengeSentence)
 			//DEBUG
 			//test := board.PrintBoard2(board.GetBoatsBoard(), false)
 			//fmt.Println(test)
@@ -423,7 +437,7 @@ func displayMenu() {
 			fmt.Println("\nVous avez quitté le programme !\n")
 		default:
 			ClearScreen()
-			fmt.Println("\nVotre choix doit etre entre 1 et 7 !\n")
+			fmt.Println("\nVotre choix doit etre entre 1 et 8 !\n")
 		}
 	}
 }

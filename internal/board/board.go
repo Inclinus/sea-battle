@@ -87,7 +87,7 @@ Prints a board with shots & boats
 IMPORTANT: if user's terminal is less wide than 44 cols, the board will not
 be printed correctly
 */
-func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) string {
+func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool, challengeSentence string) string {
 	var result bytes.Buffer
 	if isEnemyBoard {
 		result.WriteString("\n     A   B   C   D   E   F   G   H   I   J \n")
@@ -170,6 +170,7 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool) string {
 
 	if isEnemyBoard {
 		result.WriteString("   -----------------------------------------\n")
+		result.WriteString("\"" + challengeSentence + "\"\n")
 		return result.String()
 	} else {
 		fmt.Printf("   -----------------------------------------\n\n")
@@ -240,7 +241,7 @@ func AddShot(position utils.Position) bool {
 
 	actualShot := Shot{Position: position, Hit: isShot}
 
-	if isShot && !alreadyShooted(position) {
+	if !alreadyShooted(position) {
 		AllShots = append(AllShots, actualShot)
 	}
 

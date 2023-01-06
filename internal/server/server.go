@@ -95,7 +95,7 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 	switch request.Method {
 	case http.MethodGet:
 
-		result := board.PrintBoard(board.GetBoatsBoard(), true)
+		result := board.PrintBoard(board.GetBoatsBoard(), true, ChallengeSentence)
 		printInNav(result, &writer)
 
 	default:
@@ -103,7 +103,10 @@ func boardHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func LaunchServer() {
+var ChallengeSentence string
+
+func LaunchServer(challengeSentence string) {
+	ChallengeSentence = challengeSentence
 	http.HandleFunc("/board", boardHandler)
 	http.HandleFunc("/boats", boatsHandler)
 	http.HandleFunc("/hit", hitHandler)

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
@@ -133,7 +132,7 @@ func SaveAlias() {
 	if err != nil {
 		panic(err)
 	}
-	_ = ioutil.WriteFile("alias.json", finalJson, 0644)
+	_ = os.WriteFile("alias.json", finalJson, 0644)
 }
 
 func ReceiveAlias() {

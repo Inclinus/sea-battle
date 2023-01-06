@@ -434,9 +434,6 @@ func displayMenu() {
 			// Print board
 			ClearScreen()
 			board.PrintBoard(board.GetBoatsBoard(), false, ChallengeSentence)
-			//DEBUG
-			//test := board.PrintBoard2(board.GetBoatsBoard(), false)
-			//fmt.Println(test)
 		case 2:
 			//Attack or start the game
 			ClearScreen()

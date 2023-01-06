@@ -203,12 +203,12 @@ func ManageAliases() {
 	var ch int
 
 	for ch != 5 {
-		fmt.Println("Sous-Menu pour la Gestion des Alias :\n" +
+		fmt.Println("Gestion des Alias :\n" +
 			"1- Afficher les Alias\n" +
 			"2- Afficher l’ip d'un joueur\n" +
 			"3- Ajouter un Alias\n" +
 			"4- Retirer un Alias\n" +
-			"5- Quitter le Sous-Menu et retourner au Menu Principal\n\n" +
+			"5- Retourner au Menu Principal\n\n" +
 			"Quel est votre choix ?")
 
 		fmt.Scanf("%d\n", &ch)
@@ -317,11 +317,11 @@ func OpponentActions(selectedAlias string) {
 	ClearScreen()
 	var ch int
 	for ch != 4 {
-		fmt.Println("Sous-Menu de choix d'action sur " + selectedAlias + " :\n" +
+		fmt.Println("Menu des actions sur " + selectedAlias + " :\n" +
 			" 1 - Afficher son board\n" +
 			" 2 - Afficher son nombre de bateau\n" +
 			" 3 - Attaquer l'adversaire\n" +
-			" 4 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
+			" 4 - Retourner au Menu Principal\n" +
 			"Quel est votre choix ?\n")
 
 		fmt.Scanf("%d\n", &ch)

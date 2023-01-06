@@ -272,6 +272,7 @@ func DisplayStats() {
 	fmt.Printf("Bateaux coulés  : %d\n\n", stat.BoatsDestroyed)
 	fmt.Print("Appuyez sur Entrée pour revenir au menu principal...")
 	fmt.Scanln()
+	ClearScreen()
 }
 
 func ChooseOpponent() {

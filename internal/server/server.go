@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"sea-battle/internal/board"
 	"sea-battle/internal/stats"
 	"sea-battle/internal/utils"
 	"strconv"
+	"time"
 )
 
 // Function to print in navigator with Fprintln
@@ -64,10 +66,12 @@ func hitHandler(writer http.ResponseWriter, request *http.Request) {
 
 			// If all boats are destroyed, print a message and ask to restart a game
 			fmt.Print("\nTous vos bateaux ont été coulés ! Vous avez perdu !\n")
-			fmt.Println("Appuyez sur Entrée pour quitter...")
-			fmt.Scanln()
+			fmt.Println("Fermeture du jeu dans 5 secondes...")
 
-			os.Exit(3)
+			go func() {
+				time.Sleep(5 * time.Second)
+				os.Exit(3)
+			}()
 		}
 
 	default:

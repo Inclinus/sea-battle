@@ -314,7 +314,7 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		stats.AddShotHit()
 
 		// Check if target boat is destroyed
-		if GetBoatAt(pos).Destroyed {
+		if BoatsDestroyedMap[GetBoatAt(pos).Id] {
 			stats.AddBoatDestroyed()
 		}
 

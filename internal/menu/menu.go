@@ -1,6 +1,7 @@
 package menu
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"net/http"
@@ -371,11 +372,10 @@ func OpponentActions(selectedAlias string) {
 func InitMenu() {
 	initClearScreenVariables()
 	var boatsBoard [5]boats.Boat
-	// Create an array of allShots
 
-	ClearScreen()
 	choice := "CHOICE"
 	for choice != "O" {
+		ClearScreen()
 		boatsBoard = boats.GenerateRandomBoats()
 		board.PrintBoard(boatsBoard, false, ChallengeSentence)
 		fmt.Println("Voici votre board, est-ce qu'il vous satisfait ? (O/N)")
@@ -385,7 +385,9 @@ func InitMenu() {
 	satisfied := "N"
 	for satisfied != "O" {
 		fmt.Println("Veuillez choisir une phrase pour défier vos adversaires !")
-		fmt.Scanf("%s\n", &ChallengeSentence)
+		inputReader := bufio.NewReader(os.Stdin)
+		input, _ := inputReader.ReadString('\n')
+		ChallengeSentence = input
 		fmt.Println("Voici votre phrase :\n" + ChallengeSentence)
 		fmt.Println("Voulez-vous utiliser cette phrase de défi ? (O/N)")
 		fmt.Scanf("%s\n", &satisfied)

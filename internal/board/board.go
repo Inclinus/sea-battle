@@ -170,7 +170,7 @@ func PrintBoard(boats [5]boats.Boat, isEnemyBoard bool, challengeSentence string
 
 	if isEnemyBoard {
 		result.WriteString("   -----------------------------------------\n")
-		result.WriteString("\"" + challengeSentence + "\"\n")
+		result.WriteString("Message de l'adversaire :\n" + challengeSentence)
 		return result.String()
 	} else {
 		fmt.Printf("   -----------------------------------------\n\n")

@@ -240,13 +240,24 @@ func AddShot(position utils.Position) bool {
 
 	actualShot := Shot{Position: position, Hit: isShot}
 
-	AllShots = append(AllShots, actualShot)
+	if isShot && !alreadyShooted(position) {
+		AllShots = append(AllShots, actualShot)
+	}
 
 	if isShot {
 		checkDestroyed(GetBoatAt(position))
 	}
 
 	return actualShot.Hit
+}
+
+func alreadyShooted(position utils.Position) bool {
+	for _, bol := range AllShots {
+		if bol.Position.X == position.X && bol.Position.Y == position.Y {
+			return true
+		}
+	}
+	return false
 }
 
 func checkDestroyed(boat boats.Boat) {

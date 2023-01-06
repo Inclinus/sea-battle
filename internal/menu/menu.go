@@ -269,7 +269,6 @@ func DisplayStats() {
 	fmt.Println("Tir effectués   :", stat.ShotsHit+stat.ShotsMissed)
 	fmt.Println("Tir réussis     :", stat.ShotsHit)
 	fmt.Println("Tir ratés       :", stat.ShotsMissed)
-	fmt.Printf("Bateaux coulés  : %d\n\n", stat.BoatsDestroyed)
 	fmt.Print("Appuyez sur Entrée pour revenir au menu principal...")
 	fmt.Scanln()
 	ClearScreen()

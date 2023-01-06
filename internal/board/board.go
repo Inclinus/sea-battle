@@ -325,11 +325,10 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 			panic(err)
 		}
 
-		// Convert body to uint8
-		aliveBoats := uint8(body[0])
+		aliveBoatsInt, _ := strconv.Atoi(string(body))
 
 		// Check if all boats are destroyed
-		if aliveBoats == 0 {
+		if aliveBoatsInt == 0 {
 			// Notify player that he won
 			fmt.Print("\nBravo, vous avez gagné ! 🎉\n")
 			fmt.Print("Appuyez sur Entrée pour continuer...")

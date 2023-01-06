@@ -7,11 +7,10 @@ import (
 )
 
 type Stats struct {
-	GamesWon       uint
-	GamesLost      uint
-	ShotsHit       uint
-	ShotsMissed    uint
-	BoatsDestroyed uint
+	GamesWon    uint
+	GamesLost   uint
+	ShotsHit    uint
+	ShotsMissed uint
 }
 
 // Get the stats from the stats.json file
@@ -95,11 +94,5 @@ func AddGameWon() {
 func AddGameLost() {
 	stats := GetStats()
 	stats.GamesLost++
-	SaveStats(*stats)
-}
-
-func AddBoatDestroyed() {
-	stats := GetStats()
-	stats.BoatsDestroyed++
 	SaveStats(*stats)
 }

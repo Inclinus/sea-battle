@@ -313,11 +313,6 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 		fmt.Print("\nTouché ! ☺️ \n")
 		stats.AddShotHit()
 
-		// Check if target boat is destroyed
-		if BoatsDestroyedMap[GetBoatAt(pos).Id] {
-			stats.AddBoatDestroyed()
-		}
-
 		// Request opponents's alive boats
 		request, err := client.Get("http://" + clientIP.Ip + ":" + port + "/boats")
 		if err != nil {

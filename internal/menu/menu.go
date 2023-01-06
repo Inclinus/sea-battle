@@ -13,7 +13,9 @@ import (
 	"sea-battle/internal/ip"
 	"sea-battle/internal/server"
 	"sea-battle/internal/stats"
+	"sea-battle/internal/utils"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -214,15 +216,20 @@ func ManageAliases() {
 		switch ch {
 		case 1:
 			ClearScreen()
-			ip.DisplayAliases()
+			ip.DisplayAliases(true)
+			fmt.Print("Appuyez sur Entrée pour revenir à la gestion des alias...")
+			fmt.Scanln()
+			ClearScreen()
 		case 2:
 			ClearScreen()
+			ip.DisplayAliases(false)
 			searchAlias()
 		case 3:
 			ClearScreen()
 			AliasAddition()
 		case 4:
 			ClearScreen()
+			ip.DisplayAliases(false)
 			deleteFromAlias()
 		case 5:
 			ClearScreen()
@@ -246,6 +253,9 @@ func DisplayCredits() {
 		"- Noam DE MASURE @Inclinus\n" +
 		"- Charbel SALHAB @csalhabb\n" +
 		"Merci !\n")
+	fmt.Print("Appuyez sur Entrée pour revenir au menu principal...")
+	fmt.Scanln()
+	ClearScreen()
 }
 
 // function that displays the rules of the games
@@ -261,10 +271,13 @@ func DisplayRules() {
 		"- Par contre, nous ne jouons pas l’un après l’autre ici, mais en temps réel.\n" +
 		"- N’importe quel joueur peut jouer plusieurs fois d’affilée et en continu sans attendre les actions des autres.\n" +
 		"- Ce n’est pas un jeu au tour par tour.\n")
+	fmt.Print("Appuyez sur Entrée pour revenir au menu principal...")
+	fmt.Scanln()
+	ClearScreen()
 }
 
 func DisplayStats() {
-	fmt.Printf("Statistiques\n\n")
+	fmt.Printf("📈 Statistiques 📈\n\n")
 	stat := stats.GetStats()
 	fmt.Println("Parties jouées  :", stat.GamesWon+stat.GamesLost)
 	fmt.Println("Parties gagnées :", stat.GamesWon)
@@ -272,13 +285,13 @@ func DisplayStats() {
 	fmt.Println("Tir effectués   :", stat.ShotsHit+stat.ShotsMissed)
 	fmt.Println("Tir réussis     :", stat.ShotsHit)
 	fmt.Println("Tir ratés       :", stat.ShotsMissed)
-	fmt.Print("Appuyez sur Entrée pour revenir au menu principal...")
+	fmt.Println("\nAppuyez sur Entrée pour revenir au menu principal...")
 	fmt.Scanln()
 	ClearScreen()
 }
 
 func ChooseOpponent() {
-	ip.DisplayAliases()
+	ip.DisplayAliases(true)
 	fmt.Println("Veuillez entrer l'alias de l'adversaire ou 'exit' pour quitter : ")
 	var selectedAlias string
 	fmt.Scanf("%s\n", &selectedAlias)
@@ -301,13 +314,14 @@ func ChooseOpponent() {
 }
 
 func OpponentActions(selectedAlias string) {
+	ClearScreen()
 	var ch int
 	for ch != 4 {
-		fmt.Println("Sous-Menu de choix d'action sur l'adversaire :\n" +
-			"1 - Afficher son board\n" +
-			"2 - Afficher son nombre de bateau\n" +
-			"3 - Attaquer l'adversaire\n" +
-			"4 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
+		fmt.Println("Sous-Menu de choix d'action sur " + selectedAlias + " :\n" +
+			" 1 - Afficher son board\n" +
+			" 2 - Afficher son nombre de bateau\n" +
+			" 3 - Attaquer l'adversaire\n" +
+			" 4 - Quitter le Sous-Menu et retourner au Menu Principal\n" +
 			"Quel est votre choix ?\n")
 
 		fmt.Scanf("%d\n", &ch)
@@ -339,25 +353,34 @@ func OpponentActions(selectedAlias string) {
 				return
 			}
 			result := string(body)
-			fmt.Println(result)
-
+			fmt.Println("Il reste " + result + " bateau(x) à " + selectedAlias + ".\n")
 		case 3:
 			ClearScreen()
 			//Attack the opponent
-			fmt.Println("Veuillez entrer la case à attaquer : ")
-			var selectedCase string
-			fmt.Scanf("%s\n", &selectedCase)
-			pos := board.GetPositionFromString(selectedCase)
-			if pos.X == 0 || pos.Y == 0 || pos.Y > 10 {
-				fmt.Println("La case entrée n'est pas valide !")
-				OpponentActions(selectedAlias)
+			board.RequestBoard(ip.GetIpOf(selectedAlias))
+			isCaseValid := false
+			fmt.Println("🎯 " + strings.ToUpper(selectedAlias) + " 🎯")
+			var pos utils.Position
+			for !isCaseValid {
+				fmt.Println("Veuillez entrer la case à attaquer : (format : A1 ou a1) ")
+				var selectedCase string
+				fmt.Scanf("%s\n", &selectedCase)
+				pos = board.GetPositionFromString(selectedCase)
+				if pos.X == 0 || pos.Y == 0 || pos.Y > 10 {
+					fmt.Println("La case entrée n'est pas valide !")
+				} else {
+					isCaseValid = true
+				}
 			}
 			oppenentIp := ip.GetIpOf(selectedAlias)
 			resultHit := board.RequestHit(oppenentIp, pos)
 			if resultHit == false {
 				ChooseOpponent()
+				ch = 4
 			}
-			ch = 4
+			fmt.Print("Appuyez sur Entrée pour revenir aux actions sur " + selectedAlias + "...")
+			fmt.Scanln()
+			ClearScreen()
 		case 4:
 			ClearScreen()
 			fmt.Println("Retour au Menu Principal!")
@@ -397,10 +420,6 @@ func InitMenu() {
 	go server.LaunchServer(ChallengeSentence)
 
 	displayMenu()
-}
-
-func GetChallengeSentence() string {
-	return ChallengeSentence
 }
 
 func displayMenu() {

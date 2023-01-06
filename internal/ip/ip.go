@@ -68,14 +68,18 @@ func IsConnected(clientIP IP) bool {
 }
 
 // This function displays all the associations betweens IP and usernames.
-func DisplayAliases() {
+func DisplayAliases(ip bool) {
 	fmt.Println("------------------------------")
 	fmt.Println("Liste des aliases :")
 	for key, value := range Aliases {
-		if IsConnected(value) {
-			fmt.Printf("%s (%s:%d) | ✔ Connecté \n", key, value.Ip, value.Port)
+		if ip {
+			if IsConnected(value) {
+				fmt.Printf("%s (%s:%d) | ✔ Connecté \n", key, value.Ip, value.Port)
+			} else {
+				fmt.Printf("%s (%s:%d) | ❌ Hors-Ligne \n", key, value.Ip, value.Port)
+			}
 		} else {
-			fmt.Printf("%s (%s:%d) | ❌ Hors-Ligne \n", key, value.Ip, value.Port)
+			fmt.Printf("%s\n", key)
 		}
 	}
 	fmt.Println("------------------------------")

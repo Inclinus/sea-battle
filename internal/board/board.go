@@ -322,7 +322,7 @@ func RequestHit(clientIP ip.IP, pos utils.Position) bool {
 	result := string(body)
 
 	if result == "true\n" {
-		fmt.Print("\nTouché ! ☺️ \n")
+		fmt.Print("\nTouché ! 😎️ \n")
 		stats.AddShotHit()
 
 		// Request opponents's alive boats
